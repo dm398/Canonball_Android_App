@@ -16,5 +16,38 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Canon Ball Application" />
+        android:layout_centerHorizontal="true"
+        android:text="Select a difficultly level below:" />
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+        <RadioButton android:id="@+id/btnExtremelyEasy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1: Extremely Easy"
+             />
+        <RadioButton android:id="@+id/btnEasy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2: Easy"
+            />
+        <RadioButton android:id="@+id/btnModerate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3: Moderate"
+            />
+        <RadioButton android:id="@+id/btnHard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4: Hard"
+            />
+        <RadioButton android:id="@+id/btnExtremelyHard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5: Extremely Hard"
+            />
+    </RadioGroup>
 </RelativeLayout>
