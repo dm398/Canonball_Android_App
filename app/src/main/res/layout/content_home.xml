@@ -19,7 +19,9 @@
         android:layout_centerHorizontal="true"
         android:text="Select a difficultly level below:" />
 
-    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    <RadioGroup
+        android:id="@+id/radioDifficulty"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -28,26 +30,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1: Extremely Easy"
+            android:onClick="onRadioButtonClicked"
              />
         <RadioButton android:id="@+id/btnEasy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2: Easy"
+            android:onClick="onRadioButtonClicked"
             />
         <RadioButton android:id="@+id/btnModerate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3: Moderate"
+            android:onClick="onRadioButtonClicked"
             />
-        <RadioButton android:id="@+id/btnHard"
+        <RadioButton android:id="@+id/btnDifficult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4: Hard"
+            android:text="4: Difficult"
+            android:onClick="onRadioButtonClicked"
             />
-        <RadioButton android:id="@+id/btnExtremelyHard"
+        <RadioButton android:id="@+id/btnExtremelyDifficult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5: Extremely Hard"
+            android:text="5: Extremely Difficult"
+            android:onClick="onRadioButtonClicked"
             />
     </RadioGroup>
 </RelativeLayout>

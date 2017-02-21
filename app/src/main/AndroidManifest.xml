@@ -19,6 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SimpleContentActivity"></activity>
+        <activity android:name=".CanonActivity"></activity>
+
     </application>
 
 </manifest>

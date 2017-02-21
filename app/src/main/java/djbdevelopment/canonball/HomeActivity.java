@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -18,7 +20,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioDifficulty);
 
     }
 
@@ -52,5 +54,46 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+
+
+    public void onRadioButtonClicked(View view) {
+        Intent i;
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.btnExtremelyEasy:
+                if (checked) {
+                    i = new Intent(this, CanonActivity.class);
+                    startActivity(i);
+                }
+                     break;
+            case R.id.btnEasy:
+                if (checked) {
+                    i = new Intent(this, CanonActivity.class);
+                    startActivity(i);
+                }                     break;
+            case R.id.btnModerate:
+                if (checked) {
+                    i = new Intent(this, CanonActivity.class);
+                    startActivity(i);
+                }
+                break;
+            case R.id.btnDifficult:
+                if (checked) {
+                    i = new Intent(this, CanonActivity.class);
+                    startActivity(i);
+                }
+                break;
+            case R.id.btnExtremelyDifficult:
+                if (checked) {
+                    i = new Intent(this, CanonActivity.class);
+                    startActivity(i);
+                }
+                break;
+
+        }
     }
 }
