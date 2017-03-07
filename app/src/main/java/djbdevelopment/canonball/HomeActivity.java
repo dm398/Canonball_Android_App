@@ -58,46 +58,40 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    public void btnClicked(View view) {
-        System.out.println("button clicked");
-    }
 
-    public void onRadioButtonClicked(View view) {
-//        Intent i;
-//        boolean checked = ((RadioButton) view).isChecked();
-//
-//        // Check which radio button was clicked
-//        switch(view.getId()) {
-//            case R.id.btnExtremelyEasy:
-//                if (checked) {
-////                    i = new Intent(this, CanonActivity.class);
-////                    startActivity(i);
-//                }
-//                     break;
-//            case R.id.btnEasy:
-//                if (checked) {
-////                    i = new Intent(this, CanonActivity.class);
-////                    startActivity(i);
-//                }                     break;
-//            case R.id.btnModerate:
-//                if (checked) {
-////                    i = new Intent(this, CanonActivity.class);
-////                    startActivity(i);
-//                }
-//                break;
-//            case R.id.btnDifficult:
-//                if (checked) {
-////                    i = new Intent(this, CanonActivity.class);
-////                    startActivity(i);
-//                }
-//                break;
-//            case R.id.btnExtremelyDifficult:
-//                if (checked) {
-////                    i = new Intent(this, CanonActivity.class);
-////                    startActivity(i);
-//                }
-//                break;
-//
-//        }
+    public void btnClicked(View view) {
+
+        Intent i;
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.btnVEasy:
+                     i = new Intent(this, CanonActivity.class);
+                    startActivity(i);
+
+                     break;
+            case R.id.btnEasy:
+                     i = new Intent(this, CanonActivity.class);
+                    startActivity(i);
+                            break;
+            case R.id.btnModerate:
+                     i = new Intent(this, CanonActivity.class);
+                    startActivity(i);
+
+                break;
+            case R.id.btnHard:
+
+                    i = new Intent(this, CanonActivity.class);
+                    startActivity(i);
+
+                break;
+            case R.id.btnVHard:
+
+                    i = new Intent(this, CanonActivity.class);
+                    startActivity(i);
+
+                break;
+
+        }
     }
 }
