@@ -28,7 +28,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         textPaint = new Paint();
         textPaint.setTextSize((int) (30));
         textPaint.setAntiAlias(true); // smooth the text
-        textPaint.setARGB(255, 255, 0, 0);
+        textPaint.setARGB(255, 255, 255, 255);
         rect = new Rect(0, 0, CanonActivity.getScreenWidth(), CanonActivity.getScreenHeight());
         System.out.println("rect: " + rect.width() + " " + rect.height());
     }
@@ -64,17 +64,15 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void drawGameElements(Canvas g) {
         super.draw(g);
-// get the model
-        List<Sprite> sprites = model.sprites;
-// System.out.println(tag + "onDraw: " + sprites.get(0).v + " : " + sprites.get(0).s);
-        for (Sprite sprite : sprites) {
+         List<Sprite> sprites = model.sprites;
+         for (Sprite sprite : sprites) {
             sprite.draw(g);
         }
 // display time remaining
-//        g.drawText(getResources().getString(
-//                R.string.time_remaining_format, model.timeRemaining / 1000), 50, 25, textPaint);
-//        g.drawText(getResources().getString(
-//                R.string.score_format, model.score), 50, 60, textPaint);
+        g.drawText(getResources().getString(
+                R.string.time_remaining_format, model.timeRemaining / 1000), 50, 25, textPaint);
+        g.drawText(getResources().getString(
+                R.string.score_format, model.score), 50, 60, textPaint);
     }
 
 

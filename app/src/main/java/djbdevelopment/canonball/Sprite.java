@@ -26,7 +26,7 @@ public class Sprite {
     }
 
     public void reSpawn() {
-        rad = minRadius + random.nextInt(randSize);
+        rad = (float) CanonActivity.getScreenHeight()/50 + random.nextInt(40);
         s.set(0,0);
         v.set(velocityScale * (float) random.nextGaussian(),
                 velocityScale * (float) random.nextGaussian());
@@ -42,6 +42,7 @@ public class Sprite {
     }
 
     public boolean contains(float x, float y) {
+
         return s.dist(x,y) < rad;
     }
 
