@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -57,6 +58,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    public void btnClicked(View view) {
+        System.out.println("button clicked");
+    }
 
     public void onRadioButtonClicked(View view) {
 //        Intent i;

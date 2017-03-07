@@ -46,7 +46,8 @@
             android:minWidth="150dp"
             android:textSize="20sp"
             android:background="@color/myPrimaryColorC2"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:onClick="btnClicked"/>
 
         <Button
             android:id="@+id/btnEasy"
@@ -58,7 +59,8 @@
             android:minWidth="150dp"
             android:textSize="20sp"
             android:background="@color/myPrimaryColorC2"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:onClick="btnClicked"/>
 
         <Button
             android:id="@+id/btnModerate"
