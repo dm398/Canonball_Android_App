@@ -20,7 +20,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioDifficulty);
+        //RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioDifficulty);
 
     }
 
@@ -59,41 +59,41 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void onRadioButtonClicked(View view) {
-        Intent i;
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.btnExtremelyEasy:
-                if (checked) {
-                    i = new Intent(this, CanonActivity.class);
-                    startActivity(i);
-                }
-                     break;
-            case R.id.btnEasy:
-                if (checked) {
-                    i = new Intent(this, CanonActivity.class);
-                    startActivity(i);
-                }                     break;
-            case R.id.btnModerate:
-                if (checked) {
-                    i = new Intent(this, CanonActivity.class);
-                    startActivity(i);
-                }
-                break;
-            case R.id.btnDifficult:
-                if (checked) {
-                    i = new Intent(this, CanonActivity.class);
-                    startActivity(i);
-                }
-                break;
-            case R.id.btnExtremelyDifficult:
-                if (checked) {
-                    i = new Intent(this, CanonActivity.class);
-                    startActivity(i);
-                }
-                break;
-
-        }
+//        Intent i;
+//        boolean checked = ((RadioButton) view).isChecked();
+//
+//        // Check which radio button was clicked
+//        switch(view.getId()) {
+//            case R.id.btnExtremelyEasy:
+//                if (checked) {
+////                    i = new Intent(this, CanonActivity.class);
+////                    startActivity(i);
+//                }
+//                     break;
+//            case R.id.btnEasy:
+//                if (checked) {
+////                    i = new Intent(this, CanonActivity.class);
+////                    startActivity(i);
+//                }                     break;
+//            case R.id.btnModerate:
+//                if (checked) {
+////                    i = new Intent(this, CanonActivity.class);
+////                    startActivity(i);
+//                }
+//                break;
+//            case R.id.btnDifficult:
+//                if (checked) {
+////                    i = new Intent(this, CanonActivity.class);
+////                    startActivity(i);
+//                }
+//                break;
+//            case R.id.btnExtremelyDifficult:
+//                if (checked) {
+////                    i = new Intent(this, CanonActivity.class);
+////                    startActivity(i);
+//                }
+//                break;
+//
+//        }
     }
 }

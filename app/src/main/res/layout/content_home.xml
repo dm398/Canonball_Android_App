@@ -11,50 +11,106 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="djbdevelopment.canonball.HomeActivity"
-    tools:showIn="@layout/activity_home">
+    tools:showIn="@layout/activity_home"
+    android:background="@color/myPrimaryColor">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Select a difficultly level below:" />
 
-    <RadioGroup
-        android:id="@+id/radioDifficulty"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:orientation="vertical">
-        <RadioButton android:id="@+id/btnExtremelyEasy"
+        android:orientation="vertical" >
+
+        <TextView
+            android:text="CanonBall"
+            android:layout_height="match_parent"
+            android:id="@+id/textView2"
+            android:maxLines="1"
+
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@android:color/white"
+            android:textSize="40sp"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:id="@+id/btnVEasy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1: Extremely Easy"
-            android:onClick="onRadioButtonClicked"
-             />
-        <RadioButton android:id="@+id/btnEasy"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="Very Easy"
+            android:minWidth="150dp"
+            android:textSize="20sp"
+            android:background="@color/myPrimaryColorC2"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnEasy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2: Easy"
-            android:onClick="onRadioButtonClicked"
-            />
-        <RadioButton android:id="@+id/btnModerate"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Easy"
+            android:minWidth="150dp"
+            android:textSize="20sp"
+            android:background="@color/myPrimaryColorC2"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/btnModerate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3: Moderate"
-            android:onClick="onRadioButtonClicked"
-            />
-        <RadioButton android:id="@+id/btnDifficult"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Moderate"
+            android:minWidth="150dp"
+            android:textSize="20sp"
+            android:background="@color/myPrimaryColorC2"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/btnHard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4: Difficult"
-            android:onClick="onRadioButtonClicked"
-            />
-        <RadioButton android:id="@+id/btnExtremelyDifficult"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Hard"
+            android:minWidth="150dp"
+            android:textSize="20sp"
+            android:background="@color/myPrimaryColorC2"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/btnVHard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5: Extremely Difficult"
-            android:onClick="onRadioButtonClicked"
-            />
-    </RadioGroup>
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Very Hard"
+            android:minWidth="150dp"
+            android:textSize="20sp"
+            android:background="@color/myPrimaryColorC2"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/btnHighScores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="High Scores"
+            android:minWidth="150dp"
+            android:textSize="20sp"
+            android:background="@color/myPrimaryColorO1"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+
+
+
 </RelativeLayout>
