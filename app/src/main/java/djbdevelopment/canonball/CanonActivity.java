@@ -22,4 +22,9 @@ public class CanonActivity extends Activity {
         super.onCreate(savedInstanceState);
         view = new SpriteView(this, null); setContentView(view);
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+        view.surfaceDestroyed(view.getHolder());
+    }
 }

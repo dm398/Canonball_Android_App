@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -19,13 +20,29 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     private CanonThread canonThread; // controls the game loop
     GameModel model;
     Paint textPaint;
+    Paint targetPaint;
+
+    Target target;
+    double pieceLength;
+    double targetBeginning;
+    double targetEnd;
+    int noPieces = 10;
+
     Rect rect; // drawing rectangle
     static String tag = "Canon Sprite View: ";
 
     public SpriteView(Context context, AttributeSet attrs) {
         super(context, attrs); // call superclass constructor
          getHolder().addCallback(this);
+        target = new Target();
+
+        targetBeginning = CanonActivity.getScreenHeight() / 8;   // distance from top 1/8 screen height
+        targetEnd = CanonActivity.getScreenHeight() * 7 / 8;   // distance from top 7/8 screen height
+        pieceLength = (targetEnd - targetBeginning) / noPieces;
+
         textPaint = new Paint();
+        targetPaint = new Paint();
+        targetPaint.setStrokeWidth(50);
         textPaint.setTextSize((int) (30));
         textPaint.setAntiAlias(true); // smooth the text
         textPaint.setARGB(255, 255, 255, 255);
@@ -49,7 +66,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     // called when the surface is destroyed
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) { // ensure that thread terminates properly
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        // ensure that thread terminates properly
         boolean retry = true;
         canonThread.setRunning(false); // terminate Thread
         while (retry) {
@@ -64,15 +82,44 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void drawGameElements(Canvas g) {
         super.draw(g);
-         List<Sprite> sprites = model.sprites;
-         for (Sprite sprite : sprites) {
-            sprite.draw(g);
+
+
+        // draw targets
+//        List<Target> targets = model.targets;
+//        for (Target t : targets) {
+//            t.draw(g);
+//        }
+
+        Point currentPoint = new Point(); // start of current target section
+
+        // initialize currentPoint to the starting point of the target
+        currentPoint.x = target.start.x;
+        currentPoint.y = target.start.y;
+
+        // draw the target
+        for (int i = 0; i < 7; i ++) {
+
+            // if this target piece is not hit, draw it
+           // if (!hitStates[i]) {
+                // alternate coloring the pieces
+                if (i % 2 != 0)
+                    targetPaint.setColor(Color.RED);
+                else
+                    targetPaint.setColor(Color.WHITE);
+
+                g.drawLine(currentPoint.x, currentPoint.y, target.end.x,
+                        (int) (currentPoint.y + pieceLength), targetPaint);
+            //}
+
+            // move currentPoint to the start of the next piece
+            currentPoint.y += pieceLength;
+
+
+            g.drawText(getResources().getString(
+                    R.string.time_remaining_format, model.timeRemaining / 1000), 50, 25, textPaint);
+            g.drawText(getResources().getString(
+                    R.string.score_format, model.score), 50, 60, textPaint);
         }
-// display time remaining
-        g.drawText(getResources().getString(
-                R.string.time_remaining_format, model.timeRemaining / 1000), 50, 25, textPaint);
-        g.drawText(getResources().getString(
-                R.string.score_format, model.score), 50, 60, textPaint);
     }
 
 
@@ -121,13 +168,13 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         float x = event.getX();
         float y = event.getY();
         model.click(x, y);
-        List<Sprite> sprites = model.sprites;
+        List<Target> targets = model.targets;
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            for (Sprite s : sprites) {
-                if (s.contains(x, y)) {
-                    sprites.remove(s);
-                    break;
-                }
+            for (Target t : targets) {
+//                if (t.contains(x, y)) {
+//                    targets.remove(t);
+//                    break;
+//                }
             }
         }
         return super.onTouchEvent(event);
