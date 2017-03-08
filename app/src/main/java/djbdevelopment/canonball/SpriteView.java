@@ -1,6 +1,9 @@
 package djbdevelopment.canonball;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -91,47 +94,58 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         targetVelocity = target.update(rect, elapsedTimeMs, targetVelocity);
     }
 
-    public void drawGameElements(Canvas g) {
-        super.draw(g);
 
+    public void drawTarget(Canvas g) {
         Point currentPoint = new Point(); // start of current target section
 
-        // initialize currentPoint to the starting point of the target
         currentPoint.x = target.start.x;
         currentPoint.y = target.start.y;
 
         // draw the target
-        for (int i = 0; i < 7; i ++) {
+        for (int i = 0; i < 7; i++) {
             // if this target piece is not hit, draw it
-           // if (!hitStates[i]) {
-                // alternate coloring the pieces
-                if (i % 2 != 0)
-                    targetPaint.setColor(Color.RED);
-                else
-                    targetPaint.setColor(Color.WHITE);
+            // if (!hitStates[i]) {
+            // alternate coloring the pieces
+            if (i % 2 != 0)
+                targetPaint.setColor(Color.RED);
+            else
+                targetPaint.setColor(Color.WHITE);
 
-                g.drawLine(currentPoint.x, currentPoint.y, target.end.x,
-                        (int) (currentPoint.y + target.pieceLength), targetPaint);
+            g.drawLine(currentPoint.x, currentPoint.y, target.end.x,
+                    (int) (currentPoint.y + target.pieceLength), targetPaint);
             //}
 
             // move currentPoint to the start of the next piece
             currentPoint.y += target.pieceLength;
-
-
-            g.drawText(getResources().getString(
-                    R.string.time_remaining_format, model.timeRemaining / 1000), 50, 25, textPaint);
-            g.drawText(getResources().getString(
-                    R.string.score_format, model.score), 50, 60, textPaint);
         }
     }
+
+    public void drawGameInfo(Canvas g) {
+        g.drawText(getResources().getString(
+                R.string.time_remaining_format, model.timeRemaining / 1000), 50, 25, textPaint);
+        g.drawText(getResources().getString(
+                R.string.score_format, model.score), 50, 60, textPaint);
+
+    }
+
+    public void drawCanon(Canvas g) {
+        Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.cannon);
+        g.drawBitmap(bMap,0 , 0, textPaint);
+    }
+    public void drawGameElements(Canvas g) {
+        super.draw(g);
+        g.drawColor(0xFF255D6B);
+        drawTarget(g);
+        drawGameInfo(g);
+        drawCanon(g);
+        }
 
 
     private class CanonThread extends Thread {
         private SurfaceHolder surfaceHolder; // for manipulating canvas
         private boolean threadIsRunning = true; // running by default
 
-        // initializes the surface holder
-        public CanonThread(SurfaceHolder holder) {
+         public CanonThread(SurfaceHolder holder) {
             surfaceHolder = holder;
             setName("CanonThread");
         }

@@ -11,29 +11,32 @@ import static djbdevelopment.canonball.Constants.velocityScale;
  * Created by danmacduff on 07/03/2017.
  */
 
-public class Target {
+public class Target extends Sprite {
     public Point start;
     public Point end;
     double pieceLength;
     double targetBeginning;
     double targetEnd;
-    int noPieces = 10;
+    double targetDistance;
+    int noPieces;
 
-//
-//    Vector2d s, v;
-//    float rad;
-//
 
-    public Target(double pieceLength, double targetBeginning, double targetEnd, int noPieces ) {
+
+    public Target(double pieceLength, double targetBeginning, double targetEnd, double targetDistance, int noPieces ) {
         start = new Point();
         end = new Point();
-        start.y = (int) targetBeginning;
-        end.y = (int) targetEnd;
+//        start.y = (int) targetBeginning;
+//        end.y = (int) targetEnd;
         this.pieceLength = pieceLength;
         this.targetBeginning = targetBeginning;
         this.targetEnd = targetEnd;
+        this.targetDistance = targetDistance;
         this.noPieces = noPieces;
-     }
+
+        start = (new Point((int)targetDistance, (int)targetBeginning));
+        end = (new Point((int)targetDistance, (int)targetEnd));
+
+    }
 //
     public float update(Rect rect, double elapsedTime, float targetVelocity) {
         double interval = elapsedTime / 1000.0;
@@ -56,27 +59,10 @@ public class Target {
 //        s.set(100,100);
 //        v.set(200,200);
 //    }
-//    public int getScore() {
-//        return 10;
-//    }
-//    public boolean contains(float x, float y) {
-//
-//        return s.dist(x,y) < rad;
-//    }
-//    public void draw(Canvas c) {
-//
-//
-//        Paint red = new Paint();
-//        red.setARGB(255, 255, 0 ,0);
-//
-//        Paint white = new Paint();
-//        white.setARGB(255, 255, 255, 255);
-//
-//        int w = c.getWidth()/10, h = c.getHeight()/10;
-//
-//        for (int i = 0; i < 5 ; i ++ ) {
-//            c.drawOval(w*i/10, h*i/10, w*(10-i)/10, h*(10-i)/10, i % 2 == 0? red: white);
-//
-//         }
-//    }
+    public int getScore() {
+        return 10;
+    }
+    public boolean contains(float x, float y) {
+        return s.dist(x,y) < targetDistance;
+    }
 }

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class GameModel {
     Target target;
-    int nSprites = 20;
-    int nTargets = 1;
+    Canon canon;
+    int targetPieces = 7;
     int score;
     int timeRemaining = 100000;
 
@@ -55,23 +55,21 @@ public class GameModel {
     }
 
     public void click(float x, float y) {
-        //for (Target t : targets) {
-//            if (t.contains(x, y)) {
-//                score += t.getScore();
-//                 return;
-//            }
-        //}
+
+            if (target.contains(x, y)) {
+                score += target.getScore();
+                 return;
+            }
+
     }
 
     void initSprites() {
-        int noPieces = 7;
 
-        double targetBeginning = CanonActivity.getScreenHeight() / 8;   // distance from top 1/8 screen height
-        double targetEnd = CanonActivity.getScreenHeight() * 7 / 8;   // distance from top 7/8 screen height
+        double targetBeginning = CanonActivity.getScreenHeight() / 8;
+        double targetEnd = CanonActivity.getScreenHeight() * 7 / 8;
+        double targetDistance = CanonActivity.getScreenWidth() * 1 / 8; // place the target in the first 1/8 of screen
 
-            double pieceLength = (targetEnd - targetBeginning) / noPieces;
-            this.target = new Target(pieceLength,  targetBeginning, CanonActivity.getScreenHeight() * 7 / 8, noPieces);
-
-
+            double pieceLength = (targetEnd - targetBeginning) /  targetPieces ;
+            this.target = new Target(pieceLength,  targetBeginning, targetEnd, targetDistance, targetPieces);
     }
 }
