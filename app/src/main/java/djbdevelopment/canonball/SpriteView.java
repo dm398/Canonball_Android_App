@@ -26,6 +26,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     Paint targetPaint;
 
     Target target;
+    Canon canon;
     private float targetVelocity;
     int  initTargetVelocity = -CanonActivity.getScreenHeight() / 4;
 
@@ -79,6 +80,18 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
     }
+    // stops the game; called by CannonGameFragment's onPause method
+    public void stopGame() {
+        if(canonThread != null)
+            canonThread.setRunning(false);    // tell thread to terminate
+    }
+
+    // releases resources; called by CannonGame's onDestroy method
+    public void releaseResources() {
+//        mSoundPool.release();   // release all resources used by the SoundPool
+//        mSoundPool = null;
+    }
+
     private void updatePositions(double elapsedTimeMs) {
         double interval = elapsedTimeMs / 1000.0; // convert to seconds
 
@@ -172,8 +185,6 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
                         updatePositions(elapsedTimeMS);
                     }
                 } finally {
-                    // display canvas‘s contents on the View
-                    // and enable other threads to use the Canvas
                     if (canvas != null)
                         surfaceHolder.unlockCanvasAndPost(canvas);
                 }

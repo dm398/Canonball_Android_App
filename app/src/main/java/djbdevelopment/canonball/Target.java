@@ -37,16 +37,14 @@ public class Target extends Sprite {
         end = (new Point((int)targetDistance, (int)targetEnd));
 
     }
-//
+
     public float update(Rect rect, double elapsedTime, float targetVelocity) {
         double interval = elapsedTime / 1000.0;
         double targetUpdate = interval * targetVelocity;
         this.start .y += targetUpdate;
         this.end.y += targetUpdate;
-        System.out.println("start of target " + this.start.y);
-        System.out.println("end of target " + this.end.y);
-        System.out.println("rect height " + rect.height());
         if(this.start.y < 0 || this.end.y > rect.height()) {
+            // send the target in the opposite direction
             return targetVelocity *= -1;
         }
         else {
@@ -63,6 +61,7 @@ public class Target extends Sprite {
         return 10;
     }
     public boolean contains(float x, float y) {
+
         return s.dist(x,y) < targetDistance;
     }
 }

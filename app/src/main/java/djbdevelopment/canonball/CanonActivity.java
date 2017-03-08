@@ -22,9 +22,17 @@ public class CanonActivity extends Activity {
         super.onCreate(savedInstanceState);
         view = new SpriteView(this, null); setContentView(view);
     }
+    // when MainActivity is paused, CannonGameFragment terminates the game
     @Override
-    public void onStop() {
-        super.onStop();
-        view.surfaceDestroyed(view.getHolder());
+    public void onPause() {
+        super.onPause();
+        view.stopGame();  // terminates the game
+    }
+
+    // when MainActivity is destroyed, CannonGameFragment releases resources
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        view.releaseResources();
     }
 }
