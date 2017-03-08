@@ -12,23 +12,44 @@ import static djbdevelopment.canonball.Constants.velocityScale;
  */
 
 public class Target {
-    public Point start = new Point();
-    public Point end = new Point();
+    public Point start;
+    public Point end;
+    double pieceLength;
+    double targetBeginning;
+    double targetEnd;
+    int noPieces = 10;
 
 //
 //    Vector2d s, v;
 //    float rad;
 //
-    public Target() {
+
+    public Target(double pieceLength, double targetBeginning, double targetEnd, int noPieces ) {
         start = new Point();
         end = new Point();
-       // Spawn();
-    }
+        start.y = (int) targetBeginning;
+        end.y = (int) targetEnd;
+        this.pieceLength = pieceLength;
+        this.targetBeginning = targetBeginning;
+        this.targetEnd = targetEnd;
+        this.noPieces = noPieces;
+     }
 //
-//    public void update(Rect rect) {
-//        s.add(v);
-//        s.wrap(rect.width(), rect.height());
-//    }
+    public float update(Rect rect, double elapsedTime, float targetVelocity) {
+        double interval = elapsedTime / 1000.0;
+        double targetUpdate = interval * targetVelocity;
+        this.start .y += targetUpdate;
+        this.end.y += targetUpdate;
+        System.out.println("start of target " + this.start.y);
+        System.out.println("end of target " + this.end.y);
+        System.out.println("rect height " + rect.height());
+        if(this.start.y < 0 || this.end.y > rect.height()) {
+            return targetVelocity *= -1;
+        }
+        else {
+            return targetVelocity;
+        }
+    }
 //
 //    public void Spawn() {
 //        rad = (float) CanonActivity.getScreenHeight()/50;

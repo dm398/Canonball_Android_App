@@ -7,9 +7,9 @@ import android.graphics.Rect;
 import java.util.ArrayList;
 
 public class GameModel {
-     ArrayList<Target> targets;
+    Target target;
     int nSprites = 20;
-    int nTargets = 5;
+    int nTargets = 1;
     int score;
     int timeRemaining = 100000;
 
@@ -35,10 +35,10 @@ public class GameModel {
         }
 
         if (!gameOver()) {
-            for (Target t : targets)
-            {
-              //  t.update(rect);
-            }
+//            for (Target t : targets)
+//            {
+//              //  t.update(rect);
+//            }
             timeRemaining -= delay;
         }
     }
@@ -55,20 +55,23 @@ public class GameModel {
     }
 
     public void click(float x, float y) {
-        for (Target t : targets) {
+        //for (Target t : targets) {
 //            if (t.contains(x, y)) {
 //                score += t.getScore();
 //                 return;
 //            }
-        }
+        //}
     }
 
     void initSprites() {
+        int noPieces = 7;
+
+        double targetBeginning = CanonActivity.getScreenHeight() / 8;   // distance from top 1/8 screen height
+        double targetEnd = CanonActivity.getScreenHeight() * 7 / 8;   // distance from top 7/8 screen height
+
+            double pieceLength = (targetEnd - targetBeginning) / noPieces;
+            this.target = new Target(pieceLength,  targetBeginning, CanonActivity.getScreenHeight() * 7 / 8, noPieces);
 
 
-        targets = new ArrayList<Target>();
-        for (int i = 0 ; i < nTargets ; i ++) {
-            targets.add(new Target());
-        }
     }
 }

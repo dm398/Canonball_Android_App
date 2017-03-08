@@ -23,10 +23,11 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     Paint targetPaint;
 
     Target target;
-    double pieceLength;
-    double targetBeginning;
-    double targetEnd;
-    int noPieces = 10;
+    private float targetVelocity;
+    int  initTargetVelocity = -CanonActivity.getScreenHeight() / 4;
+
+    int noPieces = 7;
+
 
     Rect rect; // drawing rectangle
     static String tag = "Canon Sprite View: ";
@@ -34,19 +35,16 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     public SpriteView(Context context, AttributeSet attrs) {
         super(context, attrs); // call superclass constructor
          getHolder().addCallback(this);
-        target = new Target();
 
-        targetBeginning = CanonActivity.getScreenHeight() / 8;   // distance from top 1/8 screen height
-        targetEnd = CanonActivity.getScreenHeight() * 7 / 8;   // distance from top 7/8 screen height
-        pieceLength = (targetEnd - targetBeginning) / noPieces;
-
+        targetVelocity = initTargetVelocity;
         textPaint = new Paint();
         targetPaint = new Paint();
-        targetPaint.setStrokeWidth(50);
+        targetPaint.setStrokeWidth(25);
         textPaint.setTextSize((int) (30));
         textPaint.setAntiAlias(true); // smooth the text
         textPaint.setARGB(255, 255, 255, 255);
         rect = new Rect(0, 0, CanonActivity.getScreenWidth(), CanonActivity.getScreenHeight());
+
         System.out.println("rect: " + rect.width() + " " + rect.height());
     }
 
@@ -55,40 +53,46 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
 
-    // called when surface is first created
-    @Override
+     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         model = new GameModel(); // set up and start a new game
-          canonThread = new CanonThread(holder); // create thread
+        target = model.target;
+
+        canonThread = new CanonThread(holder); // create thread
         canonThread.setRunning(true); // start game running
         canonThread.start(); // start the game loop thread
     }
 
-    // called when the surface is destroyed
-    @Override
+     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        // ensure that thread terminates properly
-        boolean retry = true;
+         boolean retry = true;
         canonThread.setRunning(false); // terminate Thread
         while (retry) {
             try {
-                canonThread.join(); // wait for Thread to finish
+                canonThread.join();
                 retry = false;
             } catch (InterruptedException e) {
                 Log.e(tag, "Thread interrupted", e);
             }
         }
     }
+    private void updatePositions(double elapsedTimeMs) {
+        double interval = elapsedTimeMs / 1000.0; // convert to seconds
+
+
+//        double targetUpdate = interval * targetVelocity;
+//        target.start .y += targetUpdate;
+//        target.end.y += targetUpdate;
+//
+//        if(target.start.y < 0 || target.end.y > CanonActivity.getScreenHeight()) {
+//            targetVelocity *= -1;
+//        }
+
+        targetVelocity = target.update(rect, elapsedTimeMs, targetVelocity);
+    }
 
     public void drawGameElements(Canvas g) {
         super.draw(g);
-
-
-        // draw targets
-//        List<Target> targets = model.targets;
-//        for (Target t : targets) {
-//            t.draw(g);
-//        }
 
         Point currentPoint = new Point(); // start of current target section
 
@@ -98,7 +102,6 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
         // draw the target
         for (int i = 0; i < 7; i ++) {
-
             // if this target piece is not hit, draw it
            // if (!hitStates[i]) {
                 // alternate coloring the pieces
@@ -108,11 +111,11 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
                     targetPaint.setColor(Color.WHITE);
 
                 g.drawLine(currentPoint.x, currentPoint.y, target.end.x,
-                        (int) (currentPoint.y + pieceLength), targetPaint);
+                        (int) (currentPoint.y + target.pieceLength), targetPaint);
             //}
 
             // move currentPoint to the start of the next piece
-            currentPoint.y += pieceLength;
+            currentPoint.y += target.pieceLength;
 
 
             g.drawText(getResources().getString(
@@ -145,14 +148,14 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
             long previousFrameTime = System.currentTimeMillis();
             while (threadIsRunning) {
                 try {
-                    // get Canvas for exclusive drawing from this thread
-                    canvas = surfaceHolder.lockCanvas(null); // lock the surfaceHolder for drawing
+                     canvas = surfaceHolder.lockCanvas(null); // lock the surfaceHolder for drawing
                     synchronized (surfaceHolder) {
                         long currentTime = System.currentTimeMillis();
                         double elapsedTimeMS = currentTime - previousFrameTime;
                         model.update(rect, (int) elapsedTimeMS); // update game state
                         drawGameElements(canvas); // draw using the canvas
                         previousFrameTime = currentTime; // update previous time
+                        updatePositions(elapsedTimeMS);
                     }
                 } finally {
                     // display canvas‘s contents on the View
@@ -168,17 +171,18 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         float x = event.getX();
         float y = event.getY();
         model.click(x, y);
-        List<Target> targets = model.targets;
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            for (Target t : targets) {
-//                if (t.contains(x, y)) {
-//                    targets.remove(t);
-//                    break;
-//                }
-            }
-        }
+//       Target targets = model.targets;
+//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//            for (Target t : targets) {
+////                if (t.contains(x, y)) {
+////                    targets.remove(t);
+////                    break;
+////                }
+//            }
         return super.onTouchEvent(event);
+
     }
+
 
 }
 
