@@ -1,4 +1,4 @@
-package djbdevelopment.canonball;
+package djbdevelopment.cannonball;
 
 import org.junit.Test;
 

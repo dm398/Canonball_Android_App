@@ -1,15 +1,14 @@
-package djbdevelopment.canonball;
+package djbdevelopment.cannonball;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.Rect;
 import android.os.Bundle;
 
 /**
  * Created by danmacduff on 07/03/2017.
  */
-public class CanonActivity extends Activity {
-    static String tag = "Canon: ";
+public class CannonActivity extends Activity {
+    static String tag = "Cannon: ";
     SpriteView view;
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;

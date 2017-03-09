@@ -1,4 +1,4 @@
-package djbdevelopment.canonball;
+package djbdevelopment.cannonball;
 
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -7,7 +7,7 @@ import android.graphics.Rect;
 
 public class GameModel {
     Target target;
-    Canon canon;
+    Cannon cannon;
     int targetPieces = 7;
     int score;
     int timeRemaining = 100000;
@@ -61,9 +61,9 @@ public class GameModel {
     }
 
     void initSprites() {
-        double targetBeginning = CanonActivity.getScreenHeight() / 8;
-        double targetEnd = CanonActivity.getScreenHeight() * 7 / 8;
-        double targetDistance = CanonActivity.getScreenWidth() * 1 / 8; // place the target in the first 1/8 of screen
+        double targetBeginning = CannonActivity.getScreenHeight() / 8;
+        double targetEnd = CannonActivity.getScreenHeight() * 7 / 8;
+        double targetDistance = CannonActivity.getScreenWidth() * 1 / 8; // place the target in the first 1/8 of screen
 
         double pieceLength = (targetEnd - targetBeginning) / targetPieces;
         this.target = new Target(pieceLength, targetBeginning, targetEnd, targetDistance, targetPieces);

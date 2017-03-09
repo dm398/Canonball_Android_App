@@ -1,4 +1,4 @@
-package djbdevelopment.canonball;
+package djbdevelopment.cannonball;
 
 import android.app.Activity;
 import android.app.Fragment;

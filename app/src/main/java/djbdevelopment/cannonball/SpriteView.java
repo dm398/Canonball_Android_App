@@ -1,45 +1,41 @@
-package djbdevelopment.canonball;
+package djbdevelopment.cannonball;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
-import java.util.List;
+import static android.R.attr.centerX;
+import static android.R.attr.centerY;
+import static android.R.attr.x;
 
 public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     private CanonThread canonThread; // controls the game loop
     GameModel model;
     Paint textPaint;
     Paint targetPaint;
-    Paint cannonPaint;
 
     Target target;
 
-    Canon cannon;
+    Cannon cannon;
 
     private float targetVelocity;
-    int screenHeight = CanonActivity.getScreenHeight();
-    int screenWidth = CanonActivity.getScreenWidth();
+    int screenHeight = CannonActivity.getScreenHeight();
+    int screenWidth = CannonActivity.getScreenWidth();
     int initTargetVelocity = -screenHeight / 4;
 
     int noPieces = 7;
 
 
     Rect rect; // drawing rectangle
-    static String tag = "Canon Sprite View: ";
+    static String tag = "Cannon Sprite View: ";
 
     public SpriteView(Context context, AttributeSet attrs) {
         super(context, attrs); // call superclass constructor
@@ -48,9 +44,6 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         targetVelocity = initTargetVelocity;
         textPaint = new Paint();
         targetPaint = new Paint();
-        cannonPaint = new Paint();
-        cannonPaint.setARGB(255, 255, 255, 255);
-        cannonPaint.setStrokeWidth(10);
         targetPaint.setStrokeWidth(25);
         textPaint.setTextSize((int) (30));
         textPaint.setAntiAlias(true); // smooth the text
@@ -69,7 +62,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         model = new GameModel(); // set up and start a new game
         target = model.target;
-        cannon = new Canon(((screenWidth / 8) * 7), screenHeight / 18, screenHeight);
+        cannon = new Cannon(((screenWidth / 8) *  5), screenHeight / 18, screenHeight);
         canonThread = new CanonThread(holder); // create thread
         canonThread.setRunning(true); // start game running
         canonThread.start(); // start the game loop thread
@@ -141,11 +134,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawCanon(Canvas g) {
-        // draw the cannon barrel
-        g.drawLine(screenWidth, screenHeight / 2, cannon.barrelEnd.x, cannon.barrelEnd.y, cannonPaint);
-
-        // draw the cannon base
-        g.drawCircle(screenWidth, (int) screenHeight / 2, (int) cannon.cannonBaseRadius, cannonPaint);
+        g.drawLine(screenWidth, screenHeight / 2, cannon.barrelEnd.x, cannon.barrelEnd.y, cannon.cannonPaint);
+        g.drawCircle(screenWidth, (int) screenHeight / 2, (int) cannon.cannonBaseRadius, cannon.cannonPaint);
     }
 
     public void drawGameElements(Canvas g) {
@@ -154,8 +144,61 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         drawTarget(g);
         drawGameInfo(g);
         drawCanon(g);
+    }
+
+    // aligns the cannon in response to a user touch
+    private double alignCannon(MotionEvent event) {
+         Point touchPoint = new Point((int)event.getX(), (int)event.getY());
+
+        // compute the touch's distance from center of the screen
+        // on the y-axis
+        double centerMinusY = (screenHeight / 2 - touchPoint.y);
+
+        double angle = 0; // initialize angle to 0
+//        angle += Math.PI; // adjust the angle
+//
+//        angle += Math.PI; // adjust the angle
 
 
+
+        // calculate the angle the barrel makes with the horizontal
+        if(centerMinusY != 0)   // prevent division by 0
+            angle = Math.atan((double)touchPoint.x / centerMinusY);
+
+        // if the touch is on the lower half of the screen
+        if(touchPoint.y > screenHeight / 2) {
+            angle += Math.PI; // adjust the angle
+        }
+
+         cannon.barrelEnd.x = (int)(cannon.cannonLength * Math.sin(angle));
+        cannon.barrelEnd.y = (int)(-cannon.cannonLength * Math.cos(angle) + screenHeight / 2);
+
+        return angle; // return the computed angle
+    }
+
+    public void fireCannonball(MotionEvent event) {
+//        if(mCannonballOnScreen)
+//        {
+//            return; // do nothing
+//        }
+
+
+        double angle = alignCannon(event);  // get the cannon barrel's angle
+
+        // move the cannonball to be inside the cannon
+//        mCannonball.x = mCannonballRadius;  // align x-coordinate with cannot
+//        mCannonball.y = screenHeight / 2;  // centers ball vertically
+//
+//        // get the x-component of the total velocity
+//        mCannonballVelocityX = (int)(mCannonballSpeed * Math.sin(angle));
+//
+//        // get the y-component of the total velocity
+//        mCannonballVelocityY = (int)(-mCannonballSpeed * Math.cos(angle));
+//        mCannonballOnScreen = true; // the cannonball is on the screen
+//        ++mShotsFired;  // increment shotsFired
+//
+//        // play cannon fired sound
+//        mSoundPool.play(mSoundMap.get(CANNON_SOUND_ID), 1, 1, 1, 0, 1f);
     }
 
 
@@ -168,15 +211,13 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
             setName("CanonThread");
         }
 
-        // changes running state
         public void setRunning(boolean running) {
             threadIsRunning = running;
         }
 
-        // controls the game loop
         @Override
         public void run() {
-            Canvas canvas = null; // used for drawing
+            Canvas canvas = null;
             long previousFrameTime = System.currentTimeMillis();
             while (threadIsRunning) {
                 try {
@@ -210,6 +251,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 ////                    break;
 ////                }
 //            }
+        fireCannonball(event);
         return super.onTouchEvent(event);
 
     }

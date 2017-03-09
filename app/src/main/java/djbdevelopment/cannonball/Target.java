@@ -1,11 +1,7 @@
-package djbdevelopment.canonball;
+package djbdevelopment.cannonball;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-
-import static djbdevelopment.canonball.Constants.velocityScale;
 
 /**
  * Created by danmacduff on 07/03/2017.
@@ -25,17 +21,13 @@ public class Target extends Sprite {
     public Target(double pieceLength, double targetBeginning, double targetEnd, double targetDistance, int noPieces ) {
         start = new Point();
         end = new Point();
-//        start.y = (int) targetBeginning;
-//        end.y = (int) targetEnd;
         this.pieceLength = pieceLength;
         this.targetBeginning = targetBeginning;
         this.targetEnd = targetEnd;
         this.targetDistance = targetDistance;
         this.noPieces = noPieces;
-
         start = (new Point((int)targetDistance, (int)targetBeginning));
         end = (new Point((int)targetDistance, (int)targetEnd));
-
     }
 
     public float update(Rect rect, double elapsedTime, float targetVelocity) {
@@ -53,7 +45,7 @@ public class Target extends Sprite {
     }
 //
 //    public void Spawn() {
-//        rad = (float) CanonActivity.getScreenHeight()/50;
+//        rad = (float) CannonActivity.getScreenHeight()/50;
 //        s.set(100,100);
 //        v.set(200,200);
 //    }
@@ -61,7 +53,6 @@ public class Target extends Sprite {
         return 10;
     }
     public boolean contains(float x, float y) {
-
         return s.dist(x,y) < targetDistance;
     }
 }

@@ -1,4 +1,4 @@
-package djbdevelopment.canonball;
+package djbdevelopment.cannonball;
 
 
 public interface Constants {

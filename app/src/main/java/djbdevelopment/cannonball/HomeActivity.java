@@ -1,17 +1,12 @@
-package djbdevelopment.canonball;
+package djbdevelopment.cannonball;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -66,28 +61,28 @@ public class HomeActivity extends AppCompatActivity {
         // Check which radio button was clicked
         switch(view.getId()) {
             case R.id.btnVEasy:
-                     i = new Intent(this, CanonActivity.class);
+                     i = new Intent(this, CannonActivity.class);
                     startActivity(i);
 
                      break;
             case R.id.btnEasy:
-                     i = new Intent(this, CanonActivity.class);
+                     i = new Intent(this, CannonActivity.class);
                     startActivity(i);
                             break;
             case R.id.btnModerate:
-                     i = new Intent(this, CanonActivity.class);
+                     i = new Intent(this, CannonActivity.class);
                     startActivity(i);
 
                 break;
             case R.id.btnHard:
 
-                    i = new Intent(this, CanonActivity.class);
+                    i = new Intent(this, CannonActivity.class);
                     startActivity(i);
 
                 break;
             case R.id.btnVHard:
 
-                    i = new Intent(this, CanonActivity.class);
+                    i = new Intent(this, CannonActivity.class);
                     startActivity(i);
 
                 break;

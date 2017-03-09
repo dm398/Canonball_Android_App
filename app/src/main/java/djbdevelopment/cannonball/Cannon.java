@@ -1,27 +1,30 @@
-package djbdevelopment.canonball;
+package djbdevelopment.cannonball;
 
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.graphics.Point;
 
 /**
  * Created by danmacduff on 08/03/2017.
  */
 
-public class Canon {
+public class Cannon {
     Bitmap image;
     int cannonLength;
     int cannonBaseRadius;
+    Paint cannonPaint;
     Point barrelEnd;
 
-
-
-    public Canon() {
+    public Cannon() {
 
     }
 
-    Canon(int cannonLength , int cannonBaseRadius, int screenHeight) {
+    Cannon(int cannonLength , int cannonBaseRadius, int screenHeight) {
         this.cannonLength = cannonLength;
         this.cannonBaseRadius = cannonBaseRadius;
         barrelEnd = new Point(cannonLength, screenHeight / 2);
+        cannonPaint = new Paint();
+        cannonPaint.setARGB(255, 255, 255, 255);
+        cannonPaint.setStrokeWidth(10);
     }
 }

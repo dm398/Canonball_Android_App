@@ -1,4 +1,4 @@
-package djbdevelopment.canonball;
+package djbdevelopment.cannonball;
 
 
 import android.annotation.SuppressLint;

@@ -1,4 +1,4 @@
-package djbdevelopment.canonball;
+package djbdevelopment.cannonball;
 
 /**
  * Created by danmacduff on 08/03/2017.
