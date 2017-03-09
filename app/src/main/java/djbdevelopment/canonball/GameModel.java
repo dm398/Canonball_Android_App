@@ -63,7 +63,6 @@ public class GameModel {
 
     void initSprites() {
 
-        /* init target */
         double targetBeginning = CanonActivity.getScreenHeight() / 8;
         double targetEnd = CanonActivity.getScreenHeight() * 7 / 8;
         double targetDistance = CanonActivity.getScreenWidth() * 1 / 8; // place the target in the first 1/8 of screen
