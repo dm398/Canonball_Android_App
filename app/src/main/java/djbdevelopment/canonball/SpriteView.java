@@ -24,11 +24,16 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     GameModel model;
     Paint textPaint;
     Paint targetPaint;
+    Paint cannonPaint;
 
     Target target;
-    Canon canon;
+
+    Canon cannon;
+
     private float targetVelocity;
-    int  initTargetVelocity = -CanonActivity.getScreenHeight() / 4;
+    int screenHeight = CanonActivity.getScreenHeight();
+    int screenWidth = CanonActivity.getScreenWidth();
+    int initTargetVelocity = -screenHeight / 4;
 
     int noPieces = 7;
 
@@ -38,16 +43,19 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     public SpriteView(Context context, AttributeSet attrs) {
         super(context, attrs); // call superclass constructor
-         getHolder().addCallback(this);
+        getHolder().addCallback(this);
 
         targetVelocity = initTargetVelocity;
         textPaint = new Paint();
         targetPaint = new Paint();
+        cannonPaint = new Paint();
+        cannonPaint.setARGB(255, 255, 255, 255);
+        cannonPaint.setStrokeWidth(10);
         targetPaint.setStrokeWidth(25);
         textPaint.setTextSize((int) (30));
         textPaint.setAntiAlias(true); // smooth the text
         textPaint.setARGB(255, 255, 255, 255);
-        rect = new Rect(0, 0, CanonActivity.getScreenWidth(), CanonActivity.getScreenHeight());
+        rect = new Rect(0, 0, screenWidth, screenHeight);
 
         System.out.println("rect: " + rect.width() + " " + rect.height());
     }
@@ -57,19 +65,19 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
 
-     @Override
+    @Override
     public void surfaceCreated(SurfaceHolder holder) {
         model = new GameModel(); // set up and start a new game
         target = model.target;
-
+        cannon = new Canon(((screenWidth / 8) * 7), screenHeight / 18, screenHeight);
         canonThread = new CanonThread(holder); // create thread
         canonThread.setRunning(true); // start game running
         canonThread.start(); // start the game loop thread
     }
 
-     @Override
+    @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-         boolean retry = true;
+        boolean retry = true;
         canonThread.setRunning(false); // terminate Thread
         while (retry) {
             try {
@@ -80,9 +88,10 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
     }
+
     // stops the game; called by CannonGameFragment's onPause method
     public void stopGame() {
-        if(canonThread != null)
+        if (canonThread != null)
             canonThread.setRunning(false);    // tell thread to terminate
     }
 
@@ -93,17 +102,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void updatePositions(double elapsedTimeMs) {
-        double interval = elapsedTimeMs / 1000.0; // convert to seconds
-
-
-//        double targetUpdate = interval * targetVelocity;
-//        target.start .y += targetUpdate;
-//        target.end.y += targetUpdate;
-//
-//        if(target.start.y < 0 || target.end.y > CanonActivity.getScreenHeight()) {
-//            targetVelocity *= -1;
-//        }
-
+        double interval = elapsedTimeMs / 1000.0;
         targetVelocity = target.update(rect, elapsedTimeMs, targetVelocity);
     }
 
@@ -142,23 +141,29 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawCanon(Canvas g) {
-        Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.cannon);
-        g.drawBitmap(bMap,0 , 0, textPaint);
+        // draw the cannon barrel
+        g.drawLine(screenWidth, screenHeight / 2, cannon.barrelEnd.x, cannon.barrelEnd.y, cannonPaint);
+
+        // draw the cannon base
+        g.drawCircle(screenWidth, (int) screenHeight / 2, (int) cannon.cannonBaseRadius, cannonPaint);
     }
+
     public void drawGameElements(Canvas g) {
         super.draw(g);
         g.drawColor(0xFF255D6B);
         drawTarget(g);
         drawGameInfo(g);
         drawCanon(g);
-        }
+
+
+    }
 
 
     private class CanonThread extends Thread {
         private SurfaceHolder surfaceHolder; // for manipulating canvas
         private boolean threadIsRunning = true; // running by default
 
-         public CanonThread(SurfaceHolder holder) {
+        public CanonThread(SurfaceHolder holder) {
             surfaceHolder = holder;
             setName("CanonThread");
         }
@@ -175,7 +180,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
             long previousFrameTime = System.currentTimeMillis();
             while (threadIsRunning) {
                 try {
-                     canvas = surfaceHolder.lockCanvas(null); // lock the surfaceHolder for drawing
+                    canvas = surfaceHolder.lockCanvas(null); // lock the surfaceHolder for drawing
                     synchronized (surfaceHolder) {
                         long currentTime = System.currentTimeMillis();
                         double elapsedTimeMS = currentTime - previousFrameTime;
@@ -191,6 +196,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
     }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
