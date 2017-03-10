@@ -25,6 +25,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     Target target;
 
     Cannon cannon;
+    int CannonLength;
 
     private float targetVelocity;
     int screenHeight = CannonActivity.getScreenHeight();
@@ -62,7 +63,9 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         model = new GameModel(); // set up and start a new game
         target = model.target;
-        cannon = new Cannon(((screenWidth / 8) *  5), screenHeight / 18, screenHeight);
+        CannonLength = ((screenWidth / 8) *  5);
+
+        cannon = new Cannon(CannonLength, screenHeight / 18, screenHeight);
         canonThread = new CanonThread(holder); // create thread
         canonThread.setRunning(true); // start game running
         canonThread.start(); // start the game loop thread
@@ -149,31 +152,17 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     // aligns the cannon in response to a user touch
     private double alignCannon(MotionEvent event) {
          Point touchPoint = new Point((int)event.getX(), (int)event.getY());
+        int prev = cannon.cannonLength;
+        int prevX = cannon.originalBarrelEnd.x;
 
-        // compute the touch's distance from center of the screen
-        // on the y-axis
-        double centerMinusY = (screenHeight / 2 - touchPoint.y);
+        cannon.barrelEnd = touchPoint;
+        if (touchPoint.x <= prevX ) {
+            cannon.barrelEnd.x = prevX;
 
-        double angle = 0; // initialize angle to 0
-//        angle += Math.PI; // adjust the angle
-//
-//        angle += Math.PI; // adjust the angle
-
-
-
-        // calculate the angle the barrel makes with the horizontal
-        if(centerMinusY != 0)   // prevent division by 0
-            angle = Math.atan((double)touchPoint.x / centerMinusY);
-
-        // if the touch is on the lower half of the screen
-        if(touchPoint.y > screenHeight / 2) {
-            angle += Math.PI; // adjust the angle
+        } else {
+            cannon.barrelEnd.x = touchPoint.x;
         }
-
-         cannon.barrelEnd.x = (int)(cannon.cannonLength * Math.sin(angle));
-        cannon.barrelEnd.y = (int)(-cannon.cannonLength * Math.cos(angle) + screenHeight / 2);
-
-        return angle; // return the computed angle
+        return 0;
     }
 
     public void fireCannonball(MotionEvent event) {

@@ -14,6 +14,7 @@ public class Cannon {
     int cannonBaseRadius;
     Paint cannonPaint;
     Point barrelEnd;
+    Point originalBarrelEnd;
 
     public Cannon() {
 
@@ -23,8 +24,11 @@ public class Cannon {
         this.cannonLength = cannonLength;
         this.cannonBaseRadius = cannonBaseRadius;
         barrelEnd = new Point(cannonLength, screenHeight / 2);
+        originalBarrelEnd = barrelEnd;
         cannonPaint = new Paint();
         cannonPaint.setARGB(255, 255, 255, 255);
-        cannonPaint.setStrokeWidth(10);
+        cannonPaint.setStrokeWidth(8);
     }
+
+
 }
