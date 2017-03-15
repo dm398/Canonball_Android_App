@@ -2,7 +2,6 @@ package djbdevelopment.cannonball;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -12,17 +11,17 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import static android.R.attr.centerX;
-import static android.R.attr.centerY;
-import static android.R.attr.x;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     private CanonThread canonThread; // controls the game loop
     GameModel model;
     Paint textPaint;
     Paint targetPaint;
+    boolean firstDraw = true;
 
-    Target target;
+    Random random;
 
     Cannon cannon;
     int CannonLength;
@@ -32,7 +31,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     int screenWidth = CannonActivity.getScreenWidth();
     int initTargetVelocity = -screenHeight / 4;
 
-    int noPieces = 7;
+    int noPieces = 10;
 
 
     Rect rect; // drawing rectangle
@@ -54,21 +53,20 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         System.out.println("rect: " + rect.width() + " " + rect.height());
     }
 
-    // called when surface is changed
-    @Override
+     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         model = new GameModel(); // set up and start a new game
-        target = model.target;
-        CannonLength = ((screenWidth / 8) *  5);
+        random = new Random();
+         CannonLength = ((screenWidth / 8) *  5);
 
         cannon = new Cannon(CannonLength, screenHeight / 18, screenHeight);
-        canonThread = new CanonThread(holder); // create thread
-        canonThread.setRunning(true); // start game running
-        canonThread.start(); // start the game loop thread
+        canonThread = new CanonThread(holder);
+        canonThread.setRunning(true);
+        canonThread.start();
     }
 
     @Override
@@ -99,34 +97,19 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void updatePositions(double elapsedTimeMs) {
         double interval = elapsedTimeMs / 1000.0;
-        targetVelocity = target.update(rect, elapsedTimeMs, targetVelocity);
+
+        for (Target t : model.targets) {
+            t.update(rect);
+        }
     }
 
 
     public void drawTarget(Canvas g) {
-        Point currentPoint = new Point(); // start of current target section
-
-        currentPoint.x = target.start.x;
-        currentPoint.y = target.start.y;
-
-        // draw the target
-        for (int i = 0; i < 7; i++) {
-            // if this target piece is not hit, draw it
-            // if (!hitStates[i]) {
-            // alternate coloring the pieces
-            if (i % 2 != 0)
-                targetPaint.setColor(Color.RED);
-            else
-                targetPaint.setColor(Color.WHITE);
-
-            g.drawLine(currentPoint.x, currentPoint.y, target.end.x,
-                    (int) (currentPoint.y + target.pieceLength), targetPaint);
-            //}
-
-            // move currentPoint to the start of the next piece
-            currentPoint.y += target.pieceLength;
-        }
+         for (Target t : model.targets) {
+             t.draw(g);
+         }
     }
+
 
     public void drawGameInfo(Canvas g) {
         g.drawText(getResources().getString(
@@ -142,26 +125,54 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawGameElements(Canvas g) {
-        super.draw(g);
-        g.drawColor(0xFF255D6B);
-        drawTarget(g);
-        drawGameInfo(g);
-        drawCanon(g);
+      //  if (firstDraw) {
+            super.draw(g);
+            g.drawColor(0xFF255D6B);
+            drawTarget(g);
+            drawGameInfo(g);
+            drawCanon(g);
+            firstDraw = false;
+      //  }
+
+    }
+
+    Point getLineEnd(Point lineStart, Point touchPoint, int length) {
+        double rad = Math.atan((touchPoint.y - lineStart.y) / (touchPoint.x - lineStart.x));
+        Point lineEnd = new Point(lineStart);
+        lineEnd.offset((int) length * (int) Math.cos(rad), (int) length * (int) Math.sin(rad) );
+
+        return lineEnd;
     }
 
     // aligns the cannon in response to a user touch
     private double alignCannon(MotionEvent event) {
-         Point touchPoint = new Point((int)event.getX(), (int)event.getY());
-        int prev = cannon.cannonLength;
+        Point touchPoint = new Point((int)event.getX(), (int)event.getY());
+        Point barrelOrigin = new Point(screenWidth, screenHeight / 2);
         int prevX = cannon.originalBarrelEnd.x;
+        int prevY = cannon.originalBarrelEnd.y;
 
-        cannon.barrelEnd = touchPoint;
-        if (touchPoint.x <= prevX ) {
-            cannon.barrelEnd.x = prevX;
+        int diffX = prevX - touchPoint.x;
+        int diffY = prevY - touchPoint.y;
 
-        } else {
-            cannon.barrelEnd.x = touchPoint.x;
-        }
+        System.out.println("touch y" + touchPoint.y );
+        System.out.println("touch x" + touchPoint.x );
+
+        System.out.println("diff y" + diffX );
+        System.out.println("diff x" + diffY );
+
+
+//
+//        //if (diffX >= 0) {
+//            touchPoint.x += diffX;
+//      //  }
+//
+//       // if (diffY >= 0 ){
+//            touchPoint.y += diffY;
+//       // }
+
+//        touchPoint.x = touchPoint.x / cannon.cannonLength;
+//        touchPoint.y = touchPoint.y / cannon.cannonLength;
+        cannon.barrelEnd = getLineEnd(barrelOrigin, touchPoint, 70);
         return 0;
     }
 
@@ -215,7 +226,9 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
                         long currentTime = System.currentTimeMillis();
                         double elapsedTimeMS = currentTime - previousFrameTime;
                         model.update(rect, (int) elapsedTimeMS); // update game state
-                        drawGameElements(canvas); // draw using the canvas
+
+                         drawGameElements(canvas); // draw using the canvas
+
                         previousFrameTime = currentTime; // update previous time
                         updatePositions(elapsedTimeMS);
                     }
@@ -232,20 +245,19 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         float x = event.getX();
         float y = event.getY();
         model.click(x, y);
-//       Target targets = model.targets;
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//            for (Target t : targets) {
-////                if (t.contains(x, y)) {
-////                    targets.remove(t);
-////                    break;
-////                }
-//            }
-        fireCannonball(event);
+        ArrayList<Target> targets = model.targets;
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            for (Target t : targets) {
+                if (t.contains(x, y)) {
+                    targets.remove(t);
+                    break;
+                }
+            }
+            fireCannonball(event);
+
+        }
         return super.onTouchEvent(event);
-
     }
-
-
 }
 
 

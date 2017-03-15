@@ -1,58 +1,58 @@
 package djbdevelopment.cannonball;
 
-import android.graphics.Point;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 
+import java.util.Random;
+
+import static djbdevelopment.cannonball.Constants.velocityScale;
+
 /**
- * Created by danmacduff on 07/03/2017.
+ * Created by danmacduff on 15/03/2017.
  */
 
-public class Target extends Sprite {
-    public Point start;
-    public Point end;
-    double pieceLength;
-    double targetBeginning;
-    double targetEnd;
-    double targetDistance;
-    int noPieces;
+public class Target {
 
+    Vector2d s, v;
+    float rad;
+    Paint colour;
 
-
-    public Target(double pieceLength, double targetBeginning, double targetEnd, double targetDistance, int noPieces ) {
-        start = new Point();
-        end = new Point();
-        this.pieceLength = pieceLength;
-        this.targetBeginning = targetBeginning;
-        this.targetEnd = targetEnd;
-        this.targetDistance = targetDistance;
-        this.noPieces = noPieces;
-        start = (new Point((int)targetDistance, (int)targetBeginning));
-        end = (new Point((int)targetDistance, (int)targetEnd));
+    public Target(Paint colour) {
+        this();
+        this.colour = colour;
     }
 
-    public float update(Rect rect, double elapsedTime, float targetVelocity) {
-        double interval = elapsedTime / 1000.0;
-        double targetUpdate = interval * targetVelocity;
-        this.start .y += targetUpdate;
-        this.end.y += targetUpdate;
-        if(this.start.y < 0 || this.end.y > rect.height()) {
-            // send the target in the opposite direction
-            return targetVelocity *= -1;
-        }
-        else {
-            return targetVelocity;
-        }
+
+    static Random random = new Random();
+
+    public Target() {
+        s = new Vector2d();
+        v = new Vector2d();
+        spawn();
     }
-//
-//    public void Spawn() {
-//        rad = (float) CannonActivity.getScreenHeight()/50;
-//        s.set(100,100);
-//        v.set(200,200);
-//    }
+
+    public void spawn() {
+        rad = 20;
+        s.set(0,50);
+        v.set(velocityScale * (float) 1, 0);
+    }
+
+    public boolean contains(float x, float y) {
+        return s.dist(x,y) < rad;
+    }
+
+    public void draw(Canvas c) {
+        c.drawCircle(s.x, s.y, rad, colour);
+    }
+
     public int getScore() {
         return 10;
     }
-    public boolean contains(float x, float y) {
-        return s.dist(x,y) < targetDistance;
+    public void update(Rect rect) {
+        s.add(v);
+       s.wrap(rect.width(), rect.height());
     }
-}
+    }
+
+

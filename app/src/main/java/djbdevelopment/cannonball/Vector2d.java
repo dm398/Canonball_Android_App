@@ -4,8 +4,7 @@ package djbdevelopment.cannonball;
 public class Vector2d {
 
     public static void main(String[] args) {
-        // main method for convenient testing
-        Vector2d v = new Vector2d(10, 10);
+         Vector2d v = new Vector2d(10, 10);
         System.out.println(v.mag());
         v.normalise();
         System.out.println(v.mag());

@@ -4,15 +4,18 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import java.util.ArrayList;
+
 
 public class GameModel {
-    Target target;
+
+    ArrayList<Target> targets;
     Cannon cannon;
-    int targetPieces = 7;
+    int targetPieces = 10;
     int score;
     int timeRemaining = 100000;
 
-    static Paint paintBlue, paintGreen;
+    static Paint paintBlue, paintGreen, targetPaint;
 
     static {
         paintBlue = new Paint();
@@ -24,6 +27,10 @@ public class GameModel {
         paintGreen.setColor(Color.GREEN);
         paintGreen.setStyle(Paint.Style.FILL);
         paintGreen.setAntiAlias(true);
+
+        targetPaint = new Paint();
+        targetPaint.setStrokeWidth(25);
+        targetPaint.setColor(Color.WHITE);
     }
 
     public void update(Rect rect, int delay) {
@@ -33,10 +40,6 @@ public class GameModel {
         }
 
         if (!gameOver()) {
-//            for (Target t : targets)
-//            {
-//              //  t.update(rect);
-//            }
             timeRemaining -= delay;
         }
     }
@@ -46,26 +49,33 @@ public class GameModel {
     }
 
     public GameModel() {
-        System.out.println("Bubble GameModel: GameModel()");
-        initSprites();
+         initSprites();
         score = 0;
-        System.out.println("Bubble GameModel:  finished in ()");
-    }
+     }
 
     public void click(float x, float y) {
-        if (target.contains(x, y)) {
-            score += target.getScore();
+        for (Target t : targets)
+        if (t.contains(x, y)) {
+            score += t.getScore();
             return;
         }
-
     }
 
     void initSprites() {
-        double targetBeginning = CannonActivity.getScreenHeight() / 8;
-        double targetEnd = CannonActivity.getScreenHeight() * 7 / 8;
-        double targetDistance = CannonActivity.getScreenWidth() * 1 / 8; // place the target in the first 1/8 of screen
 
-        double pieceLength = (targetEnd - targetBeginning) / targetPieces;
-        this.target = new Target(pieceLength, targetBeginning, targetEnd, targetDistance, targetPieces);
+        targets = new ArrayList<Target>();
+        int Xcount = 0;
+        int YCount = 0;
+
+        for (int i = 0; i < targetPieces; i++) {
+            Target tar = new Target(targetPaint);
+            tar.s.add(Xcount, YCount);
+            targets.add(tar);
+            Xcount += 200;
+            if ( i % 3 == 0 ) {
+                YCount += 80;
+            }
+
+        }
     }
 }

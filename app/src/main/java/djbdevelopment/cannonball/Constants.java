@@ -9,7 +9,7 @@ public interface Constants {
     int blueScore = -50;
     int greenScore = 10;
 
-    float velocityScale = 5;
+    float velocityScale = 3;
     String highScoreFile = "highScore.txt";
 
     int delay = 50;
