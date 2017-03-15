@@ -19,7 +19,11 @@ public class CannonActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        view = new SpriteView(this, null); setContentView(view);
+        int noTargets = getIntent().getIntExtra("Targets", 10);
+        System.out.println("No Targets : " + noTargets);
+        view = new SpriteView(this, null);
+        view.noTargets = noTargets;
+        setContentView(view);
     }
     // when MainActivity is paused, CannonGameFragment terminates the game
     @Override

@@ -76,15 +76,18 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case R.id.btnHard:
 
-                    i = new Intent(this, CannonActivity.class);
-                    startActivity(i);
+                i = new Intent(this, CannonActivity.class).putExtra("Targets", 5);
+                startActivity(i);
 
                 break;
             case R.id.btnVHard:
-
-                    i = new Intent(this, CannonActivity.class);
+                    System.out.println("vhard clicked");
+                    i = new Intent(this, CannonActivity.class).putExtra("Targets", 15);
                     startActivity(i);
 
+                break;
+            default:
+                System.out.println(view.getId());
                 break;
 
         }

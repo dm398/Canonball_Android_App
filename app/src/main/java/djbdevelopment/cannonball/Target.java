@@ -34,7 +34,7 @@ public class Target {
 
     public void spawn() {
         rad = 20;
-        s.set(0,50);
+        s.set(0,80);
         v.set(velocityScale * (float) 1, 0);
     }
 
@@ -43,6 +43,7 @@ public class Target {
     }
 
     public void draw(Canvas c) {
+
         c.drawCircle(s.x, s.y, rad, colour);
     }
 

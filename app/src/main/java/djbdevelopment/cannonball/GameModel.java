@@ -11,9 +11,11 @@ public class GameModel {
 
     ArrayList<Target> targets;
     Cannon cannon;
-    int targetPieces = 10;
+    int noTargets;
     int score;
     int timeRemaining = 100000;
+
+
 
     static Paint paintBlue, paintGreen, targetPaint;
 
@@ -48,7 +50,8 @@ public class GameModel {
         return timeRemaining <= 0;
     }
 
-    public GameModel() {
+    public GameModel(int noTargets) {
+        this.noTargets = noTargets;
          initSprites();
         score = 0;
      }
@@ -67,12 +70,13 @@ public class GameModel {
         int Xcount = 0;
         int YCount = 0;
 
-        for (int i = 0; i < targetPieces; i++) {
+        for (int i = 0; i < noTargets; i++) {
             Target tar = new Target(targetPaint);
             tar.s.add(Xcount, YCount);
             targets.add(tar);
             Xcount += 200;
             if ( i % 3 == 0 ) {
+                // distribute three target per row
                 YCount += 80;
             }
 

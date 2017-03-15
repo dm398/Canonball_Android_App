@@ -72,7 +72,8 @@
             android:minWidth="150dp"
             android:textSize="20sp"
             android:background="@color/myPrimaryColorC2"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:onClick="btnClicked"/>
 
         <Button
             android:id="@+id/btnHard"
@@ -84,7 +85,8 @@
             android:minWidth="150dp"
             android:textSize="20sp"
             android:background="@color/myPrimaryColorC2"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:onClick="btnClicked"/>
 
         <Button
             android:id="@+id/btnVHard"
@@ -96,7 +98,8 @@
             android:minWidth="150dp"
             android:textSize="20sp"
             android:background="@color/myPrimaryColorC2"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:onClick="btnClicked"/>
 
         <Button
             android:id="@+id/btnHighScores"
@@ -108,7 +111,8 @@
             android:minWidth="150dp"
             android:textSize="20sp"
             android:background="@color/myPrimaryColorO1"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:onClick="btnClicked"/>
 
     </LinearLayout>
 
