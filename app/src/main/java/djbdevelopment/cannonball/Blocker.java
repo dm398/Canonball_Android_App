@@ -48,7 +48,10 @@ public class Blocker {
         else {
            return false;
        }
+    }
 
+    public float getLength() {
+        return  stop.x - start.x;
     }
 
     public void draw(Canvas c) {

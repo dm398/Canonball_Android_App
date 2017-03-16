@@ -10,6 +10,7 @@ import android.support.v4.content.res.ResourcesCompat;
 
 import java.util.Random;
 
+import static djbdevelopment.cannonball.Constants.targetSpeed;
 import static djbdevelopment.cannonball.Constants.velocityScale;
 
 /**
@@ -29,11 +30,8 @@ public class Target {
 
     public Target() {
         Paint p = new Paint();
-
         p.setColor(Color.WHITE);
-
         this.colour = p;
-
         s = new Vector2d();
         v = new Vector2d();
         spawn();
@@ -42,7 +40,7 @@ public class Target {
     public void spawn() {
         rad = 20;
         s.set(0,80);
-        v.set(velocityScale * (float) 1, 0);
+        v.set(targetSpeed * (float) 1, 0);
     }
 
     public boolean contains(float x, float y) {

@@ -13,9 +13,7 @@ public class GameModel {
     Cannon cannon;
     int noTargets;
     int score;
-    int timeRemaining = 100000;
-
-
+    int timeRemaining = 10000;
 
     static Paint paintBlue, paintGreen, targetPaint;
 
@@ -36,13 +34,13 @@ public class GameModel {
     }
 
     public void update(Rect rect, int delay) {
-        // check that the drawing rectangle is valid
         if (rect.width() <= 0 || rect.height() <= 0) {
             return;
         }
-
         if (!gameOver()) {
             timeRemaining -= delay;
+        } else {
+            System.out.println("game over!");
         }
     }
 

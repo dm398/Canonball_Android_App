@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static djbdevelopment.cannonball.Constants.bonusScore;
+import static djbdevelopment.cannonball.Constants.punishScore;
 import static djbdevelopment.cannonball.Constants.velocityScale;
 
 public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
@@ -116,16 +117,20 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
             if (t.contains(cb.s.x, cb.s.y)) {
                 model.targets.remove(t);
                 model.score += t.getScore();
+                model.timeRemaining += bonusScore;
                 cb.reSpawn();
                 break;
             }
             if (blocker.contains(cb.s.x, cb.s.y)) {
                 cb.reSpawn();
+                model.timeRemaining += punishScore;
+                // increase blocker's length by 5%
+                float addedLength = blocker.getLength() * (float) 0.05;
+                blocker.stop.x += addedLength;
             }
         }
-       cb.update(rect);
+        cb.update(rect);
         blocker.update(rect);
-
     }
 
 
@@ -224,14 +229,6 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         float y = event.getY();
          ArrayList<Target> targets = model.targets;
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            for (Target t : targets) {
-                if (t.contains(cb.s.x, cb.s.y)) {
-                    targets.remove(t);
-                    model.score += t.getScore();
-                    model.timeRemaining += 1000000;
-                    break;
-                }
-            }
 
             fireCannonball(event);
 

@@ -12,8 +12,10 @@ public interface Constants {
 
     int bonusScore = 3000;
     int punishScore = -2000;
+    float targetSpeed = 5;
+
     float velocityScale = 3;
-    float cannonBallSpeed = 7;
+    float cannonBallSpeed = 9;
     String highScoreFile = "highScore.txt";
 
     int delay = 50;
