@@ -10,6 +10,7 @@ public interface Constants {
     int greenScore = 10;
 
     float velocityScale = 3;
+    float cannonBallSpeed = 7;
     String highScoreFile = "highScore.txt";
 
     int delay = 50;

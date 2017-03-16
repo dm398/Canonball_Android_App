@@ -7,6 +7,7 @@ import android.graphics.Rect;
 
 import java.util.Random;
 
+import static djbdevelopment.cannonball.Constants.cannonBallSpeed;
 import static djbdevelopment.cannonball.Constants.velocityScale;
 
 /**
@@ -44,17 +45,14 @@ public class CannonBall {
         return 10;
     }
 
-    public void fire() {
+    public void fire(float x, float y) {
+        System.out.println("x float is " + x );
+        System.out.println("y float is " + y );
 
-        float a = (float) random.nextGaussian();
-        float b = (float) random.nextGaussian();
 
-        System.out.println("a float is " + a );
-        System.out.println("b float is " + b );
-
-        v.set(velocityScale * a, velocityScale * b);
-//        v.set(velocityScale * (float) 200,
-//           velocityScale * (float) 50);
+        double theta = Math.atan2(y - CannonActivity.getScreenHeight(), x - (CannonActivity.getScreenWidth()/2));
+        v.x = cannonBallSpeed * (float) Math.cos(theta);
+        v.y = cannonBallSpeed * (float) Math.sin(theta);
     }
 
     public void update(Rect rect) {

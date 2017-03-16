@@ -14,6 +14,8 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static djbdevelopment.cannonball.Constants.velocityScale;
+
 public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     private CanonThread canonThread; // controls the game loop
     GameModel model;
@@ -146,43 +148,17 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         return lineEnd;
     }
 
-    // aligns the cannon in response to a user touch
-    private double alignCannon(MotionEvent event) {
-//        Point touchPoint = new Point((int)event.getX(), (int)event.getY());
-//        Point barrelOrigin = new Point(screenWidth, screenHeight / 2);
-//        int prevX = cannon.originalBarrelEnd.x;
-//        int prevY = cannon.originalBarrelEnd.y;
-//
-//        int diffX = prevX - touchPoint.x;
-//        int diffY = prevY - touchPoint.y;
-//
-//        System.out.println("touch y" + touchPoint.y );
-//        System.out.println("touch x" + touchPoint.x );
-//
-//        System.out.println("diff y" + diffX );
-//        System.out.println("diff x" + diffY );
-//
-//
-////
-////        //if (diffX >= 0) {
-////            touchPoint.x += diffX;
-////      //  }
-////
-////       // if (diffY >= 0 ){
-////            touchPoint.y += diffY;
-////       // }
-//
-////        touchPoint.x = touchPoint.x / cannon.cannonLength;
-////        touchPoint.y = touchPoint.y / cannon.cannonLength;
-//        cannon.barrelEnd = getLineEnd(barrelOrigin, touchPoint, 70);
-        return 0;
+
+    public static double getAngle(double point1X, double point1Y, double fixedX, double fixedY) {
+
+        double angle = Math.atan2(point1Y - fixedY, point1X - fixedX);
+
+        return angle;
     }
 
     public void fireCannonball(MotionEvent event) {
         Point touchPoint = new Point((int)event.getX(), (int)event.getY());
-        //cb.fire(touchPoint.x, touchPoint.y);
-        cb.fire();
-
+        cb.fire(touchPoint.x, touchPoint.y);
     }
 
 
