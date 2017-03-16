@@ -1,6 +1,7 @@
 package djbdevelopment.cannonball;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -15,6 +16,10 @@ public class CannonActivity extends Activity {
     }
     public static int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
+    public static Context getContext() {
+        return getContext();
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {

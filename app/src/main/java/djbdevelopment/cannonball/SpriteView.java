@@ -14,6 +14,7 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static djbdevelopment.cannonball.Constants.bonusScore;
 import static djbdevelopment.cannonball.Constants.velocityScale;
 
 public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
@@ -25,9 +26,11 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     Random random;
 
     Cannon cannon;
+    CannonBall cb;
+    Blocker blocker;
     int CannonLength;
 
-    CannonBall cb;
+
 
     int noTargets;
 
@@ -65,8 +68,16 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         random = new Random();
         CannonLength = ((screenWidth / 8) *  5);
 
-        cannon = new Cannon(CannonLength, screenHeight / 18, screenHeight);
+        this.cannon = new Cannon(CannonLength, screenHeight / 18, screenHeight);
         this.cb = new CannonBall(targetPaint);
+        this.blocker = new Blocker(targetPaint);
+        Target lastTarget = model.targets.get(model.targets.size() - 1);
+
+        float blockerY = lastTarget.s.y + 50;
+
+        blocker.start.y = blockerY;
+        blocker.stop.y = blockerY;
+
 
         canonThread = new CanonThread(holder);
         canonThread.setRunning(true);
@@ -95,16 +106,23 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     // releases resources; called by CannonGame's onDestroy method
     public void releaseResources() {
-//        mSoundPool.release();   // release all resources used by the SoundPool
-//        mSoundPool = null;
+
     }
 
     private void updatePositions(double elapsedTimeMs) {
         double interval = elapsedTimeMs / 1000.0;
         for (Target t : model.targets) {
             t.update(rect);
+            if (t.contains(cb.s.x, cb.s.y)) {
+                model.targets.remove(t);
+                model.score += t.getScore();
+                cb.reSpawn();
+                break;
+            }
         }
        cb.update(rect);
+        blocker.update(rect);
+
     }
 
 
@@ -130,13 +148,20 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
          cb.draw(c);
     }
 
+    public void drawBlocker(Canvas c) {
+        blocker.draw(c);
+    }
+
+
     public void drawGameElements(Canvas c) {
-             super.draw(c);
-            c.drawColor(0xFF255D6B);
-            drawTarget(c);
-            drawGameInfo(c);
-            drawCanon(c);
-        drawCannonBall(c);
+         super.draw(c);
+        c.drawColor(0xFF255D6B);
+        drawTarget(c);
+        drawGameInfo(c);
+        drawCanon(c);
+         drawCannonBall(c);
+        drawBlocker(c);
+
 
     }
 
@@ -146,14 +171,6 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         lineEnd.offset((int) length * (int) Math.cos(rad), (int) length * (int) Math.sin(rad) );
 
         return lineEnd;
-    }
-
-
-    public static double getAngle(double point1X, double point1Y, double fixedX, double fixedY) {
-
-        double angle = Math.atan2(point1Y - fixedY, point1X - fixedX);
-
-        return angle;
     }
 
     public void fireCannonball(MotionEvent event) {
@@ -202,12 +219,13 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
-        model.click(x, y);
-        ArrayList<Target> targets = model.targets;
+         ArrayList<Target> targets = model.targets;
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             for (Target t : targets) {
-                if (t.contains(x, y)) {
+                if (t.contains(cb.s.x, cb.s.y)) {
                     targets.remove(t);
+                    model.score += t.getScore();
+                    model.timeRemaining += 1000000;
                     break;
                 }
             }

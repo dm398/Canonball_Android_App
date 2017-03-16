@@ -1,8 +1,12 @@
 package djbdevelopment.cannonball;
 
+import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 
 import java.util.Random;
 
@@ -18,15 +22,18 @@ public class Target {
     float rad;
     Paint colour;
 
-    public Target(Paint colour) {
-        this();
-        this.colour = colour;
-    }
+
 
 
     static Random random = new Random();
 
     public Target() {
+        Paint p = new Paint();
+
+        p.setColor(Color.WHITE);
+
+        this.colour = p;
+
         s = new Vector2d();
         v = new Vector2d();
         spawn();
@@ -52,7 +59,11 @@ public class Target {
     }
     public void update(Rect rect) {
         s.add(v);
-       s.wrap(rect.width(), rect.height());
+        if (s.x >= CannonActivity.getScreenWidth() || s.x <= 0 ) {
+            // we need to make it go in the opposite direction
+            v.x *= -1;
+            v.y *= -1;
+        }
     }
     }
 

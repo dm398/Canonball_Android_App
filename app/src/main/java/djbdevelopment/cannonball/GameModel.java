@@ -56,13 +56,7 @@ public class GameModel {
         score = 0;
      }
 
-    public void click(float x, float y) {
-        for (Target t : targets)
-        if (t.contains(x, y)) {
-            score += t.getScore();
-            return;
-        }
-    }
+
 
     void initSprites() {
 
@@ -71,13 +65,16 @@ public class GameModel {
         int YCount = 0;
 
         for (int i = 0; i < noTargets; i++) {
-            Target tar = new Target(targetPaint);
+            System.out.println ( (i+1) + " targets created");
+            Target tar = new Target();
             tar.s.add(Xcount, YCount);
             targets.add(tar);
             Xcount += 200;
             if ( i % 3 == 0 ) {
                 // distribute three target per row
                 YCount += 80;
+                // reset x index
+                Xcount = 0;
             }
 
         }

@@ -9,6 +9,9 @@ public interface Constants {
     int blueScore = -50;
     int greenScore = 10;
 
+
+    int bonusScore = 3000;
+    int punishScore = -2000;
     float velocityScale = 3;
     float cannonBallSpeed = 7;
     String highScoreFile = "highScore.txt";

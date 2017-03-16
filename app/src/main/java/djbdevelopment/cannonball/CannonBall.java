@@ -35,7 +35,7 @@ public class CannonBall {
     }
 
     public void reSpawn() {
-        rad = 50;
+        rad = 20;
         s.x = CannonActivity.getScreenWidth() /2;
         s.y = CannonActivity.getScreenHeight();
         v.set(0,0);
@@ -46,10 +46,12 @@ public class CannonBall {
     }
 
     public void fire(float x, float y) {
-        System.out.println("x float is " + x );
-        System.out.println("y float is " + y );
 
-
+        if (s.x != CannonActivity.getScreenWidth() / 2 || s.y != CannonActivity.getScreenHeight()) {
+            // once the cannonball has been fired we don't want to change
+            // its velocity
+            return;
+        }
         double theta = Math.atan2(y - CannonActivity.getScreenHeight(), x - (CannonActivity.getScreenWidth()/2));
         v.x = cannonBallSpeed * (float) Math.cos(theta);
         v.y = cannonBallSpeed * (float) Math.sin(theta);
@@ -72,8 +74,7 @@ public class CannonBall {
     }
 
     public void draw(Canvas c) {
-        //System.out.println("drawing at x: " + s.x + ", y at : " + s.y);
-        c.drawCircle(s.x, s.y, rad, fg);
+         c.drawCircle(s.x, s.y, rad, fg);
     }
 
 
