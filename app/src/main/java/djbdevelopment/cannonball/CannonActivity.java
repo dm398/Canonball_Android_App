@@ -1,6 +1,7 @@
 package djbdevelopment.cannonball;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -10,7 +11,7 @@ import android.os.Bundle;
  */
 public class CannonActivity extends Activity {
     static String tag = "Cannon: ";
-    SpriteView view;
+     public SpriteView view;
 
     int difficultyRating;
     int noTargets;
@@ -24,6 +25,19 @@ public class CannonActivity extends Activity {
     public static Context getContext() {
         return getContext();
     }
+
+    public static void showGameOverDialog() {
+
+         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+         builder.setMessage("Game over")
+                .setTitle("End of game");
+
+         AlertDialog dialog = builder.create();
+
+
+
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,17 +47,16 @@ public class CannonActivity extends Activity {
         view.noTargets = noTargets;
         setContentView(view);
     }
-    // when MainActivity is paused, CannonGameFragment terminates the game
-    @Override
+     @Override
     public void onPause() {
         super.onPause();
         view.stopGame();  // terminates the game
     }
 
-    // when MainActivity is destroyed, CannonGameFragment releases resources
-    @Override
+     @Override
     public void onDestroy() {
         super.onDestroy();
+        view.stopGame();
         view.releaseResources();
     }
 }

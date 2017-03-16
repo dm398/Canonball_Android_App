@@ -40,7 +40,9 @@ public class GameModel {
         if (!gameOver()) {
             timeRemaining -= delay;
         } else {
-            System.out.println("game over!");
+            // end of game - put some logic here!!
+           // CannonActivity.view.stopGame();
+           // CannonActivity.showGameOverDialog();
         }
     }
 

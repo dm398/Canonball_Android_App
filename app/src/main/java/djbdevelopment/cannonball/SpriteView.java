@@ -99,14 +99,12 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    // stops the game; called by CannonGameFragment's onPause method
-    public void stopGame() {
+     public void stopGame() {
         if (canonThread != null)
-            canonThread.setRunning(false);    // tell thread to terminate
+            canonThread.setRunning(false);
     }
 
-    // releases resources; called by CannonGame's onDestroy method
-    public void releaseResources() {
+     public void releaseResources() {
 
     }
 
