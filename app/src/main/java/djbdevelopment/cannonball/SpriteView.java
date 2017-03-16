@@ -124,7 +124,14 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
                 model.timeRemaining += punishScore;
                 // increase blocker's length by 5%
                 float addedLength = blocker.getLength() * (float) 0.05;
-                blocker.stop.x += addedLength;
+
+                if (blocker.stop.x + addedLength < screenWidth) {
+                    // add the extra length to the end if we can get it to fit
+                    blocker.stop.x += addedLength;
+                }
+                else {
+                    blocker.start.x -= addedLength;
+                }
             }
         }
         cb.update(rect);
