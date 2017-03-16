@@ -64,7 +64,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         CannonLength = ((screenWidth / 8) *  5);
 
         cannon = new Cannon(CannonLength, screenHeight / 18, screenHeight);
-        this.cb = new CannonBall();
+        this.cb = new CannonBall(targetPaint);
 
         canonThread = new CanonThread(holder);
         canonThread.setRunning(true);
@@ -102,7 +102,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         for (Target t : model.targets) {
             t.update(rect);
         }
-        cb.update();
+       cb.update(rect);
     }
 
 
@@ -125,7 +125,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawCannonBall(Canvas c) {
-        cb.draw(c);
+         cb.draw(c);
     }
 
     public void drawGameElements(Canvas c) {
@@ -134,7 +134,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
             drawTarget(c);
             drawGameInfo(c);
             drawCanon(c);
-            drawCannonBall(c);
+        drawCannonBall(c);
+
     }
 
     Point getLineEnd(Point lineStart, Point touchPoint, int length) {
@@ -179,7 +180,9 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void fireCannonball(MotionEvent event) {
         Point touchPoint = new Point((int)event.getX(), (int)event.getY());
-        cb.fire(touchPoint.x, touchPoint.y);
+        //cb.fire(touchPoint.x, touchPoint.y);
+        cb.fire();
+
     }
 
 
