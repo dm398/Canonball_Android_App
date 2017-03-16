@@ -1,5 +1,7 @@
 package djbdevelopment.cannonball;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 public class GameModel {
 
     ArrayList<Target> targets;
+    Context context;
     Cannon cannon;
     int noTargets;
     int score;
@@ -40,18 +43,43 @@ public class GameModel {
         if (!gameOver()) {
             timeRemaining -= delay;
         } else {
+
+
             // end of game - put some logic here!!
-           // CannonActivity.view.stopGame();
+            showGameOverDialog();
            // CannonActivity.showGameOverDialog();
         }
     }
 
+
+    public void showGameOverDialog() {
+
+       final CannonActivity c = (CannonActivity) this.context;
+        c.view.stopGame();
+
+
+        c.runOnUiThread(new Runnable() {
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(c);
+
+                builder.setMessage("Game over")
+                        .setTitle("End of game");
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+
+
+    }
     public boolean gameOver() {
         return timeRemaining <= 0;
     }
 
-    public GameModel(int noTargets) {
+    public GameModel(int noTargets, Context context) {
         this.noTargets = noTargets;
+        this.context = context;
          initSprites();
         score = 0;
      }

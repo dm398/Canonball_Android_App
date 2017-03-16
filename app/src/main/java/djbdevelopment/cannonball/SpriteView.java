@@ -20,6 +20,7 @@ import static djbdevelopment.cannonball.Constants.velocityScale;
 
 public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     private CanonThread canonThread; // controls the game loop
+    Context context;
     GameModel model;
     Paint textPaint;
     Paint targetPaint;
@@ -46,7 +47,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     public SpriteView(Context context, AttributeSet attrs) {
         super(context, attrs); // call superclass constructor
         getHolder().addCallback(this);
-
+        this.context = context;
         targetVelocity = initTargetVelocity;
         textPaint = new Paint();
         targetPaint = new Paint();
@@ -65,7 +66,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        model = new GameModel(noTargets); // set up and start a new game
+        model = new GameModel(noTargets, this.context); // set up and start a new game
         random = new Random();
         CannonLength = ((screenWidth / 8) *  5);
 

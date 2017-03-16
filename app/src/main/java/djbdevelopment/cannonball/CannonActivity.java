@@ -26,18 +26,17 @@ public class CannonActivity extends Activity {
         return getContext();
     }
 
-    public static void showGameOverDialog() {
+    public void showGameOverDialog() {
 
-         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+         AlertDialog.Builder builder = new AlertDialog.Builder(CannonActivity.this);
 
          builder.setMessage("Game over")
                 .setTitle("End of game");
 
          AlertDialog dialog = builder.create();
 
-
-
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
