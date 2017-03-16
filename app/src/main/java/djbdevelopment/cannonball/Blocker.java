@@ -34,7 +34,7 @@ public class Blocker {
     }
 
     public void spawn() {
-        rad = 20;
+        rad = stop.x - start.x;
         start.set(0, CannonActivity.getScreenHeight() - 100);
         stop.set((CannonActivity.getScreenWidth() / 8 ) * 3, CannonActivity.getScreenHeight() - 100);
         v.set(velocityScale * (float) 1, 0);
@@ -42,7 +42,13 @@ public class Blocker {
 
 
     public boolean contains(float x, float y) {
-        return false;
+       if (x > start.x && x < stop.x && start.y >= y) {
+           return true;
+       }
+        else {
+           return false;
+       }
+
     }
 
     public void draw(Canvas c) {

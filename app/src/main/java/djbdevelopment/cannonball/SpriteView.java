@@ -119,6 +119,9 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
                 cb.reSpawn();
                 break;
             }
+            if (blocker.contains(cb.s.x, cb.s.y)) {
+                cb.reSpawn();
+            }
         }
        cb.update(rect);
         blocker.update(rect);

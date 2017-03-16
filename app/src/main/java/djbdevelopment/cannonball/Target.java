@@ -46,7 +46,9 @@ public class Target {
     }
 
     public boolean contains(float x, float y) {
+
         return s.dist(x,y) < rad;
+
     }
 
     public void draw(Canvas c) {
