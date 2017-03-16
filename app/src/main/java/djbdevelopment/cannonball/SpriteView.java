@@ -195,7 +195,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void fireCannonball(MotionEvent event) {
         Point touchPoint = new Point((int)event.getX(), (int)event.getY());
-        cb.fire(touchPoint.x, touchPoint.y);
+        model.shotsFired += cb.fire(touchPoint.x, touchPoint.y);
     }
 
 

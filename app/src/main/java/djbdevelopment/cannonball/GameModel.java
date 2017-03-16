@@ -1,10 +1,17 @@
 package djbdevelopment.cannonball;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -17,6 +24,7 @@ public class GameModel {
     int noTargets;
     int score;
     int timeRemaining = 10000;
+    int shotsFired = 0;
 
     static Paint paintBlue, paintGreen, targetPaint;
 
@@ -46,32 +54,57 @@ public class GameModel {
 
 
             // end of game - put some logic here!!
-            showGameOverDialog();
+
+            if (targets.size() == 0) {
+                showGameOverDialog(R.string.win);
+
+            }
+            else {
+                showGameOverDialog(R.string.lose);
+
+            }
            // CannonActivity.showGameOverDialog();
         }
     }
 
 
-    public void showGameOverDialog() {
+    // display an AlertDialog when the game ends
+    private void showGameOverDialog(final int messageId) {
+        final CannonActivity c = (CannonActivity) this.context;
+               c.view.stopGame();
+        // DialogFragment to display quiz stats and start new quiz
+        final DialogFragment gameResult = new DialogFragment() {
+             @Override
+            public Dialog onCreateDialog(Bundle bundle) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(getResources().getString(messageId));
+                 builder.setMessage(getResources().getString(R.string.results_format, shotsFired));
+                builder.setPositiveButton(R.string.reset_game,
+                        new DialogInterface.OnClickListener() {
+                            // called when "Reset Game" Button is pressed
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int which) {
+//                                mDialogIsDisplayed = false;
+//                                newGame();  // set up and start a new game
+                            }
+                        });
 
-       final CannonActivity c = (CannonActivity) this.context;
-        c.view.stopGame();
-
-
-        c.runOnUiThread(new Runnable() {
-            public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(c);
-
-                builder.setMessage("Game over")
-                        .setTitle("End of game");
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                return builder.create();    // return the AlertDialog
             }
-        });
+        };
 
+        // in GUI thread, use FragmentManager to display the DialogFragment
+        c.runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        //mDialogIsDisplayed = true;
 
-
+                        gameResult.setCancelable(false);    // modal dialog
+                        gameResult.show(c.getFragmentManager(), "results");
+                    }
+                }
+        );
     }
     public boolean gameOver() {
         return timeRemaining <= 0;
