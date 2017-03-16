@@ -113,6 +113,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         for (Target t : model.targets) {
             t.update(rect);
             if (t.contains(cb.s.x, cb.s.y)) {
+                // ball has hit the target
                 model.targets.remove(t);
                 model.score += t.getScore();
                 model.timeRemaining += bonusScore;
@@ -120,17 +121,22 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             }
             if (blocker.contains(cb.s.x, cb.s.y)) {
-                cb.reSpawn();
-                model.timeRemaining += punishScore;
-                // increase blocker's length by 5%
-                float addedLength = blocker.getLength() * (float) 0.05;
+                // ball has hit the blocker
 
-                if (blocker.stop.x + addedLength < screenWidth) {
-                    // add the extra length to the end if we can get it to fit
-                    blocker.stop.x += addedLength;
-                }
-                else {
-                    blocker.start.x -= addedLength;
+                if (cb.backfiring == false) {
+                    // we only call this if the cannonball
+                    // isn't already in the process of backfiring
+                    model.timeRemaining += punishScore;
+                    // increase blocker's length by 5%
+                    float addedLength = blocker.getLength() * (float) 0.05;
+
+                    if (blocker.stop.x + addedLength < screenWidth) {
+                        // add the extra length to the end if we can get it to fit
+                        blocker.stop.x += addedLength;
+                    } else {
+                        blocker.start.x -= addedLength;
+                    }
+                    cb.backfire();
                 }
             }
         }

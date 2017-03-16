@@ -18,6 +18,7 @@ public class CannonBall {
     Vector2d s, v;
     float rad;
     Paint fg;
+    boolean backfiring = false;
 
     public CannonBall(Paint fg) {
         this();
@@ -39,6 +40,7 @@ public class CannonBall {
         s.x = CannonActivity.getScreenWidth() /2;
         s.y = CannonActivity.getScreenHeight();
         v.set(0,0);
+        backfiring = false;
     }
 
     public int getScore() {
@@ -55,6 +57,13 @@ public class CannonBall {
         double theta = Math.atan2(y - CannonActivity.getScreenHeight(), x - (CannonActivity.getScreenWidth()/2));
         v.x = cannonBallSpeed * (float) Math.cos(theta);
         v.y = cannonBallSpeed * (float) Math.sin(theta);
+    }
+
+    public void backfire() {
+        backfiring = true;
+        System.out.println("initial v.y : " + v.y);
+        v.y *= -1;
+        System.out.println("new v.y : " + v.y);
     }
 
     public void update(Rect rect) {

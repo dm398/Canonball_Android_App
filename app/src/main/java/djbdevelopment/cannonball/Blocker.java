@@ -66,7 +66,7 @@ public class Blocker {
         start.add(v);
         stop.add(v);
         if (stop.x >= CannonActivity.getScreenWidth() || start.x <= 0 ) {
-            // we need to make it go in the opposite direction
+            // we need to make the blocker move in the opposite direction
             v.x *= -1;
             v.y *= -1;
         }
