@@ -13,6 +13,7 @@ import android.os.Bundle;
 import java.util.ArrayList;
 
 import static djbdevelopment.cannonball.Constants.blockerSpeed;
+import static djbdevelopment.cannonball.Constants.targetSpeed;
 
 
 public class GameModel {
@@ -67,7 +68,12 @@ public class GameModel {
     }
 
 
+    public void adjustTargetSpeed() {
+        targetSpeed += (difficulty.getValue() - 1);
+    }
     public void adjustDifficultySettings() {
+        System.out.println("--- adjusting difficulty");
+        System.out.println("difficulty rating " + difficulty.getValue());
 
         if (difficulty == null) {
             System.out.println("difficulty is null");
@@ -79,36 +85,34 @@ public class GameModel {
                     t.rad += 30;
                 }
                 blockerSpeed = difficulty.getValue() ;
-
                 break;
             case EASY:
                 for (Target t : targets) {
                     t.rad += 20;
                 }
                 blockerSpeed = difficulty.getValue() ;
-
                 break;
             case MODERATE:
                 blockerSpeed = difficulty.getValue() ;
-
                 break;
             case HARD:
                 for (Target t : targets) {
                     t.rad -= 5;
                 }
                 blockerSpeed = difficulty.getValue() ;
-
                 break;
             case VERY_HARD:
                 for (Target t : targets) {
                     t.rad -= 10;
                 }
                 blockerSpeed = difficulty.getValue() ;
-
-
                 break;
-
         }
+    }
+
+    public void resetConstants () {
+          targetSpeed = 2;
+         blockerSpeed = 3;
     }
 
      private void showGameOverDialog(final int messageId) {
@@ -124,6 +128,7 @@ public class GameModel {
                         new DialogInterface.OnClickListener() {
                              @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
+
                              c.view = new SpriteView(c, null);
                                  c.view.noTargets = difficulty.getValue() * 2;
                               c.view.difficulty = difficulty;
@@ -154,13 +159,16 @@ public class GameModel {
         this.context = context;
         this.difficulty = difficulty;
          initSprites();
+        adjustDifficultySettings();
+
         score = 0;
      }
 
 
 
     void initSprites() {
-
+        resetConstants();
+        adjustTargetSpeed();
         targets = new ArrayList<Target>();
         int Xcount = 0;
         int YCount = 0;
@@ -177,8 +185,6 @@ public class GameModel {
                 // reset x index
                 Xcount = 0;
             }
-
         }
-        adjustDifficultySettings();
     }
 }

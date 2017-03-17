@@ -49,8 +49,8 @@ public class CannonBall {
     public int fire(float x, float y) {
 
         if (s.x != CannonActivity.getScreenWidth() / 2 || s.y != CannonActivity.getScreenHeight()) {
-            // once the cannonball has been fired we don't want to change
-            // its velocity
+            // once the cannonball has been fired we
+            // don't want to change its velocity
             return 0;
         }
         double theta = Math.atan2(y - CannonActivity.getScreenHeight(), x - (CannonActivity.getScreenWidth()/2));
@@ -61,14 +61,11 @@ public class CannonBall {
 
     public void backfire() {
         backfiring = true;
-        System.out.println("initial v.y : " + v.y);
         v.y *= -1;
-        System.out.println("new v.y : " + v.y);
-    }
+     }
 
     public void update(Rect rect) {
        s.add(v);
-
         if (s.y <= 0 || s.x <= 0 || s.x >= CannonActivity.getScreenWidth() || s.y >= CannonActivity.getScreenHeight()){
             // cannon ball off the screen, so we reset
             s.x = CannonActivity.getScreenWidth() /2;
