@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import java.util.Random;
 
 import static djbdevelopment.cannonball.Constants.cannonBallSpeed;
-import static djbdevelopment.cannonball.Constants.velocityScale;
 
 /**
  * Created by danmacduff on 09/03/2017.

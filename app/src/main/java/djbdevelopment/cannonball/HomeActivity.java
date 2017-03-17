@@ -10,6 +10,8 @@ import android.view.MenuItem;
 
 public class HomeActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,29 +63,31 @@ public class HomeActivity extends AppCompatActivity {
         // Check which radio button was clicked
         switch(view.getId()) {
             case R.id.btnVEasy:
-                     i = new Intent(this, CannonActivity.class);
+                i = new Intent(this, CannonActivity.class).putExtra("Difficulty", Difficulty.VERY_EASY);
                     startActivity(i);
 
                      break;
             case R.id.btnEasy:
-                     i = new Intent(this, CannonActivity.class);
+                i = new Intent(this, CannonActivity.class).putExtra("Difficulty",  Difficulty.EASY);
                     startActivity(i);
                             break;
             case R.id.btnModerate:
-                     i = new Intent(this, CannonActivity.class);
+                i = new Intent(this, CannonActivity.class).putExtra("Difficulty",  Difficulty.MODERATE);
                     startActivity(i);
 
                 break;
             case R.id.btnHard:
 
-                i = new Intent(this, CannonActivity.class).putExtra("Targets", 5);
+                i = new Intent(this, CannonActivity.class).putExtra("Difficulty",  Difficulty.HARD);
                 startActivity(i);
 
                 break;
             case R.id.btnVHard:
-                    System.out.println("vhard clicked");
-                    i = new Intent(this, CannonActivity.class).putExtra("Targets", 15);
-                    startActivity(i);
+                 i = new Intent(this, CannonActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Difficulty", Difficulty.VERY_HARD);
+                i.putExtras(bundle);
+                startActivity(i);
 
                 break;
             default:

@@ -8,10 +8,10 @@ import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 
+import static djbdevelopment.cannonball.Constants.*;
 import java.util.Random;
 
-import static djbdevelopment.cannonball.Constants.targetSpeed;
-import static djbdevelopment.cannonball.Constants.velocityScale;
+
 
 /**
  * Created by danmacduff on 15/03/2017.
@@ -22,9 +22,6 @@ public class Target {
     Vector2d s, v;
     float rad;
     Paint colour;
-
-
-
 
     static Random random = new Random();
 

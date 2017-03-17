@@ -7,7 +7,7 @@
      <string name="reset_game">Reset Game</string>
     <string name="time_remaining_format">%d seconds remaining</string>
     <string name="score_format">Score: %d </string>
-    <string name="results_format">Shots fired: %1$d\nTime: %1$d</string>
+    <string name="results_format">Your score: %1$d\nShots fired: %2$d\nTime Elapsed: %3$d seconds</string>
      <string name="win">You win!</string>
     <string name="lose">Game over!</string>
 

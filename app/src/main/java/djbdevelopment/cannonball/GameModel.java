@@ -9,20 +9,21 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static djbdevelopment.cannonball.Constants.blockerSpeed;
 
 
 public class GameModel {
 
     ArrayList<Target> targets;
+    Difficulty difficulty;
     Context context;
     Cannon cannon;
     int noTargets;
     int score;
+    int timeElapsed = 0;
     int timeRemaining = 10000;
     int shotsFired = 0;
 
@@ -45,62 +46,100 @@ public class GameModel {
     }
 
     public void update(Rect rect, int delay) {
+        if (targets.size() == 0) {
+            showGameOverDialog(R.string.win);
+        }
         if (rect.width() <= 0 || rect.height() <= 0) {
             return;
         }
         if (!gameOver()) {
             timeRemaining -= delay;
+            timeElapsed += delay;
         } else {
-
-
-            // end of game - put some logic here!!
-
-            if (targets.size() == 0) {
+             if (targets.size() == 0) {
                 showGameOverDialog(R.string.win);
 
             }
             else {
                 showGameOverDialog(R.string.lose);
-
             }
-           // CannonActivity.showGameOverDialog();
-        }
+         }
     }
 
 
-    // display an AlertDialog when the game ends
-    private void showGameOverDialog(final int messageId) {
+    public void adjustDifficultySettings() {
+
+        if (difficulty == null) {
+            System.out.println("difficulty is null");
+
+        }
+         switch (difficulty) {
+            case VERY_EASY :
+                for (Target t : targets) {
+                    t.rad += 30;
+                }
+                blockerSpeed = difficulty.getValue() ;
+
+                break;
+            case EASY:
+                for (Target t : targets) {
+                    t.rad += 20;
+                }
+                blockerSpeed = difficulty.getValue() ;
+
+                break;
+            case MODERATE:
+                blockerSpeed = difficulty.getValue() ;
+
+                break;
+            case HARD:
+                for (Target t : targets) {
+                    t.rad -= 5;
+                }
+                blockerSpeed = difficulty.getValue() ;
+
+                break;
+            case VERY_HARD:
+                for (Target t : targets) {
+                    t.rad -= 10;
+                }
+                blockerSpeed = difficulty.getValue() ;
+
+
+                break;
+
+        }
+    }
+
+     private void showGameOverDialog(final int messageId) {
         final CannonActivity c = (CannonActivity) this.context;
                c.view.stopGame();
-        // DialogFragment to display quiz stats and start new quiz
-        final DialogFragment gameResult = new DialogFragment() {
+         final DialogFragment gameResult = new DialogFragment() {
              @Override
             public Dialog onCreateDialog(Bundle bundle) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(getResources().getString(messageId));
-                 builder.setMessage(getResources().getString(R.string.results_format, shotsFired));
+                 builder.setMessage(getResources().getString(R.string.results_format, score, shotsFired, timeElapsed/1000));
                 builder.setPositiveButton(R.string.reset_game,
                         new DialogInterface.OnClickListener() {
-                            // called when "Reset Game" Button is pressed
-                            @Override
+                             @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
-//                                mDialogIsDisplayed = false;
-//                                newGame();  // set up and start a new game
+                             c.view = new SpriteView(c, null);
+                                 c.view.noTargets = difficulty.getValue() * 2;
+                              c.view.difficulty = difficulty;
+                                 c.setContentView(c.view);
                             }
                         });
 
-                return builder.create();    // return the AlertDialog
+                return builder.create();
             }
         };
 
-        // in GUI thread, use FragmentManager to display the DialogFragment
-        c.runOnUiThread(
+         c.runOnUiThread(
                 new Runnable() {
                     @Override
                     public void run() {
-                        //mDialogIsDisplayed = true;
-
-                        gameResult.setCancelable(false);    // modal dialog
+                         gameResult.setCancelable(false);
                         gameResult.show(c.getFragmentManager(), "results");
                     }
                 }
@@ -110,9 +149,10 @@ public class GameModel {
         return timeRemaining <= 0;
     }
 
-    public GameModel(int noTargets, Context context) {
+    public GameModel(int noTargets, Context context, Difficulty difficulty) {
         this.noTargets = noTargets;
         this.context = context;
+        this.difficulty = difficulty;
          initSprites();
         score = 0;
      }
@@ -133,11 +173,12 @@ public class GameModel {
             Xcount += 200;
             if ( i % 3 == 0 ) {
                 // distribute three target per row
-                YCount += 80;
+                YCount += 90;
                 // reset x index
                 Xcount = 0;
             }
 
         }
+        adjustDifficultySettings();
     }
 }

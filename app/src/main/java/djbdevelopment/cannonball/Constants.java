@@ -1,22 +1,16 @@
 package djbdevelopment.cannonball;
 
 
-public interface Constants {
-
-    int minRadius = 10;
-    int randSize = 40;
-
-    int blueScore = -50;
-    int greenScore = 10;
+public final class Constants {
 
 
-    int bonusScore = 3000;
-    int punishScore = -2000;
-    float targetSpeed = 5;
 
-    float velocityScale = 3;
-    float cannonBallSpeed = 9;
-    String highScoreFile = "highScore.txt";
+    static int bonusScore = 3000;
+    static int punishScore = -2000;
+   static float targetSpeed = 5;
+
+     static float blockerSpeed = 3;
+    static float cannonBallSpeed = 9;
 
     int delay = 50;
 

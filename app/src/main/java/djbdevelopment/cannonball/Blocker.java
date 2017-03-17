@@ -6,7 +6,7 @@ import android.graphics.Rect;
 
 import java.util.Random;
 
-import static djbdevelopment.cannonball.Constants.velocityScale;
+import static djbdevelopment.cannonball.Constants.blockerSpeed;
 
 /**
  * Created by danmacduff on 07/03/2017.
@@ -37,12 +37,12 @@ public class Blocker {
         rad = stop.x - start.x;
         start.set(0, CannonActivity.getScreenHeight() - 100);
         stop.set((CannonActivity.getScreenWidth() / 8 ) * 3, CannonActivity.getScreenHeight() - 100);
-        v.set(velocityScale * (float) 1, 0);
+        v.set(blockerSpeed * (float) 1, 0);
     }
 
 
     public boolean contains(float x, float y) {
-       if (x > start.x && x < stop.x && start.y >= y) {
+        if (x >= start.x && x <= stop.x && y <= start.y && y >= getBlockerTopY()) {
            return true;
        }
         else {
@@ -52,6 +52,12 @@ public class Blocker {
 
     public float getLength() {
         return  stop.x - start.x;
+    }
+
+    public float getBlockerTopY() {
+        // the line has a thickness which will alter
+        // the region in which the ball can hit
+        return start.y - this.colour.getStrokeWidth();
     }
 
     public void draw(Canvas c) {

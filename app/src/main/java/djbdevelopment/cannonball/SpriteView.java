@@ -13,10 +13,9 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 import java.util.Random;
+import static djbdevelopment.cannonball.Constants.*;
 
-import static djbdevelopment.cannonball.Constants.bonusScore;
-import static djbdevelopment.cannonball.Constants.punishScore;
-import static djbdevelopment.cannonball.Constants.velocityScale;
+
 
 public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     private CanonThread canonThread; // controls the game loop
@@ -33,7 +32,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     int CannonLength;
 
 
-
+    Difficulty difficulty;
     int noTargets;
 
     private float targetVelocity;
@@ -41,7 +40,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     int screenWidth = CannonActivity.getScreenWidth();
     int initTargetVelocity = -screenHeight / 4;
 
-    Rect rect; // drawing rectangle
+    Rect rect;
     static String tag = "Cannon Sprite View: ";
 
     public SpriteView(Context context, AttributeSet attrs) {
@@ -66,16 +65,17 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        model = new GameModel(noTargets, this.context); // set up and start a new game
+        model = new GameModel(noTargets, this.context, difficulty);
         random = new Random();
         CannonLength = ((screenWidth / 8) *  5);
 
         this.cannon = new Cannon(CannonLength, screenHeight / 18, screenHeight);
         this.cb = new CannonBall(targetPaint);
         this.blocker = new Blocker(targetPaint);
+
         Target lastTarget = model.targets.get(model.targets.size() - 1);
 
-        float blockerY = lastTarget.s.y + 50;
+        float blockerY = lastTarget.s.y + 80;
 
         blocker.start.y = blockerY;
         blocker.stop.y = blockerY;
@@ -100,6 +100,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+
+
      public void stopGame() {
         if (canonThread != null)
             canonThread.setRunning(false);
@@ -116,7 +118,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
             if (t.contains(cb.s.x, cb.s.y)) {
                 // ball has hit the target
                 model.targets.remove(t);
-                model.score += t.getScore();
+                // increase score by 10 x the current difficulty value
+                model.score += difficulty.getValue() * 10;
                 model.timeRemaining += bonusScore;
                 cb.reSpawn();
                 break;
@@ -125,6 +128,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
                 // ball has hit the blocker
 
                 if (cb.backfiring == false) {
+                    model.score -= difficulty.getValue() * 15;
+
                     // we only call this if the cannonball
                     // isn't already in the process of backfiring
                     model.timeRemaining += punishScore;
