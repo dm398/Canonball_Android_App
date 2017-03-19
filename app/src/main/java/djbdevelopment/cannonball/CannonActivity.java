@@ -11,7 +11,7 @@ import android.os.Bundle;
  */
 public class CannonActivity extends Activity {
     static String tag = "Cannon: ";
-     public SpriteView view;
+    public SpriteView view;
 
     Difficulty difficulty;
 

@@ -23,8 +23,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     GameModel model;
     Paint textPaint;
     Paint targetPaint;
+    AudioPlayer ap;
 
-    Random random;
 
     Cannon cannon;
     CannonBall cb;
@@ -38,7 +38,6 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     private float targetVelocity;
     int screenHeight = CannonActivity.getScreenHeight();
     int screenWidth = CannonActivity.getScreenWidth();
-    int initTargetVelocity = -screenHeight / 4;
 
     Rect rect;
     static String tag = "Cannon Sprite View: ";
@@ -47,26 +46,22 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         super(context, attrs); // call superclass constructor
         getHolder().addCallback(this);
         this.context = context;
-        targetVelocity = initTargetVelocity;
-        textPaint = new Paint();
-        targetPaint = new Paint();
-        targetPaint.setStrokeWidth(25);
-        textPaint.setTextSize((int) (30));
-        textPaint.setAntiAlias(true); // smooth the text
-        textPaint.setARGB(255, 255, 255, 255);
-        rect = new Rect(0, 0, screenWidth, screenHeight);
-
+        ap = new AudioPlayer();
         System.out.println("rect: " + rect.width() + " " + rect.height());
     }
+
 
      @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
 
+
+    public void setupCanon(){
+
+    }
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         model = new GameModel(noTargets, this.context, difficulty);
-        random = new Random();
         CannonLength = ((screenWidth / 8) *  5);
 
         this.cannon = new Cannon(CannonLength, screenHeight / 18, screenHeight);
@@ -88,6 +83,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        ap.stop();
         boolean retry = true;
         canonThread.setRunning(false); // terminate Thread
         while (retry) {
@@ -100,28 +96,28 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-
-
      public void stopGame() {
         if (canonThread != null)
+        {
             canonThread.setRunning(false);
+        }
+         ap.stop();
     }
 
-     public void releaseResources() {
-
-    }
 
     private void updatePositions(double elapsedTimeMs) {
         double interval = elapsedTimeMs / 1000.0;
         for (Target t : model.targets) {
             t.update(rect);
             if (t.contains(cb.s.x, cb.s.y)) {
+                ap.playGlassSound(context);
                 // ball has hit the target
                 model.targets.remove(t);
                 // increase score by 10 x the current difficulty value
                 model.score += difficulty.getValue() * 10;
                 model.timeRemaining += bonusScore;
                 cb.reSpawn();
+
                 break;
             }
             if (blocker.contains(cb.s.x, cb.s.y)) {
@@ -143,6 +139,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
                         blocker.start.x -= addedLength;
                     }
                     cb.backfire();
+                    ap.playBounceSound(context);
                 }
             }
         }
@@ -200,7 +197,12 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void fireCannonball(MotionEvent event) {
         Point touchPoint = new Point((int)event.getX(), (int)event.getY());
-        model.shotsFired += cb.fire(touchPoint.x, touchPoint.y);
+        int res = cb.fire(touchPoint.x, touchPoint.y);
+        model.shotsFired += res;
+
+        if (res == 1) {
+            ap.playFireSound(context);
+        }
     }
 
 
@@ -251,6 +253,15 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
         }
         return super.onTouchEvent(event);
+    }
+    public void initPaints(){
+        textPaint = new Paint();
+        targetPaint = new Paint();
+        targetPaint.setStrokeWidth(25);
+        textPaint.setTextSize((int) (30));
+        textPaint.setAntiAlias(true); // smooth the text
+        textPaint.setARGB(255, 255, 255, 255);
+        rect = new Rect(0, 0, screenWidth, screenHeight);
     }
 }
 

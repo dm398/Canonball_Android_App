@@ -35,9 +35,9 @@ public class Blocker {
 
     public void spawn() {
         rad = stop.x - start.x;
-        start.set(0, CannonActivity.getScreenHeight() - 100);
-        stop.set((CannonActivity.getScreenWidth() / 8 ) * 3, CannonActivity.getScreenHeight() - 100);
-        v.set(blockerSpeed * (float) 1, 0);
+        start.set((CannonActivity.getScreenWidth() / 8 ) * 6, CannonActivity.getScreenHeight() - 100);
+        stop.set(CannonActivity.getScreenWidth() , CannonActivity.getScreenHeight() - 100);
+        v.set(blockerSpeed * (float) -1, 0);
     }
 
 

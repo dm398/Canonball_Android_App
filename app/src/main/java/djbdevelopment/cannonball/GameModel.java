@@ -19,6 +19,7 @@ import static djbdevelopment.cannonball.Constants.targetSpeed;
 public class GameModel {
 
     ArrayList<Target> targets;
+
     Difficulty difficulty;
     Context context;
     Cannon cannon;
