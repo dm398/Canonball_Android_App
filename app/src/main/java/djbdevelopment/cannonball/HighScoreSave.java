@@ -16,6 +16,8 @@ public class HighScoreSave {
     SharedPreferences sharedPref;
     ArrayList<Integer> scores;
 
+
+
     public HighScoreSave(Activity activity) {
         this.activity = activity;
         this.scores = new ArrayList<Integer>();

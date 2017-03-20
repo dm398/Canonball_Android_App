@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
     <string name="action_help">Help</string>
-
+    <string name="ok">Okay</string>
      <string name="reset_game">Reset Game</string>
     <string name="time_remaining_format">%d seconds remaining</string>
     <string name="score_format">Score: %d </string>
@@ -16,7 +16,7 @@
     <string name="high_score_third">3:</string>
     <string name="high_score_fourth">4:</string>
     <string name="high_score_fifth">5:</string>
-    <string name="high_scores">High Scores: \n 1: %1$d\n2: %2$d\n3: %3$d\n4: %4$d\n5: %5$d</string>
+    <string name="high_scores">1: %1$d\n2: %2$d\n3: %3$d\n4: %4$d\n5: %5$d</string>
     <string name="end_game_message">Your score: %1$d\nShots fired: %2$d\nTime Elapsed: %3$d seconds\nHigh Scores: \n\n1: %4$d\n2: %5$d\n3: %6$d\n4: %7$d\n5: %8$d</string>
 
 </resources>

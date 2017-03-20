@@ -1,5 +1,10 @@
 package djbdevelopment.cannonball;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -57,10 +64,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void btnClicked(View view) {
-
         Intent i;
-
-        // Check which radio button was clicked
         switch(view.getId()) {
             case R.id.btnVEasy:
                 i = new Intent(this, CannonActivity.class).putExtra("Difficulty", Difficulty.VERY_EASY);
@@ -90,6 +94,38 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(i);
 
                 break;
+            case R.id.btnHighScores:
+               Activity a = this;
+                HighScoreSave highScoreSave = new HighScoreSave(a);
+                final ArrayList<Integer> highScores = highScoreSave.getScores();
+                final DialogFragment gameResult = new DialogFragment() {
+                    @Override
+                    public Dialog onCreateDialog(Bundle bundle) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("High Scores");
+                        builder.setMessage(getResources().getString(R.string.high_scores, highScores.get(0), highScores.get(1), highScores.get(2), highScores.get(3), highScores.get(4) ));
+                        builder.setPositiveButton(R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int which) {
+                                        dismiss();
+                                    }
+                                });
+
+                        return builder.create();
+                    }
+                };
+                runOnUiThread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                gameResult.setCancelable(false);
+                                gameResult.show(getFragmentManager(), "results");
+                            }
+                        }
+                );
+                break;
+
             default:
                 System.out.println(view.getId());
                 break;
