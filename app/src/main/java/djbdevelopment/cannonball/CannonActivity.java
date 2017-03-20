@@ -57,6 +57,5 @@ public class CannonActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         view.stopGame();
-        view.releaseResources();
-    }
+     }
 }

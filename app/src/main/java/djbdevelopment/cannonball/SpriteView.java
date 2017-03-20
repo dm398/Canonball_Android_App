@@ -47,8 +47,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
         this.context = context;
         ap = new AudioPlayer();
-        System.out.println("rect: " + rect.width() + " " + rect.height());
-    }
+        initPaints();
+     }
 
 
      @Override
