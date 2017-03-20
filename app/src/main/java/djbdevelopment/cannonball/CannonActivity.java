@@ -3,6 +3,7 @@ package djbdevelopment.cannonball;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -12,8 +13,9 @@ import android.os.Bundle;
 public class CannonActivity extends Activity {
     static String tag = "Cannon: ";
     public SpriteView view;
-
     Difficulty difficulty;
+    final static String highScores = "highScorePrefs";
+    SharedPreferences SP;
 
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -41,7 +43,7 @@ public class CannonActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         difficulty = (Difficulty) getIntent().getExtras().getSerializable("Difficulty");
-
+        SP = getSharedPreferences(highScores, 0);
         view = new SpriteView(this, null);
         view.noTargets = difficulty.getValue() * 2;
         view.difficulty = difficulty;

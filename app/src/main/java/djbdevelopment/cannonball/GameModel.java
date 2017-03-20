@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -19,7 +20,8 @@ import static djbdevelopment.cannonball.Constants.targetSpeed;
 public class GameModel {
 
     ArrayList<Target> targets;
-
+    HighScoreSave highScoreSave;
+    ArrayList<Integer> highScores;
     Difficulty difficulty;
     Context context;
     Cannon cannon;
@@ -49,6 +51,7 @@ public class GameModel {
 
     public void update(Rect rect, int delay) {
         if (targets.size() == 0) {
+            saveHighScore();
             showGameOverDialog(R.string.win);
         }
         if (rect.width() <= 0 || rect.height() <= 0) {
@@ -58,13 +61,16 @@ public class GameModel {
             timeRemaining -= delay;
             timeElapsed += delay;
         } else {
-             if (targets.size() == 0) {
-                showGameOverDialog(R.string.win);
 
+             if (targets.size() == 0) {
+                 saveHighScore();
+                 showGameOverDialog(R.string.win);
             }
             else {
-                showGameOverDialog(R.string.lose);
+                 saveHighScore();
+                 showGameOverDialog(R.string.lose);
             }
+
          }
     }
 
@@ -76,10 +82,7 @@ public class GameModel {
         System.out.println("--- adjusting difficulty");
         System.out.println("difficulty rating " + difficulty.getValue());
 
-        if (difficulty == null) {
-            System.out.println("difficulty is null");
 
-        }
          switch (difficulty) {
             case VERY_EASY :
                 for (Target t : targets) {
@@ -112,7 +115,7 @@ public class GameModel {
     }
 
     public void resetConstants () {
-          targetSpeed = 2;
+         targetSpeed = 2;
          blockerSpeed = 3;
     }
 
@@ -124,16 +127,12 @@ public class GameModel {
             public Dialog onCreateDialog(Bundle bundle) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(getResources().getString(messageId));
-                 builder.setMessage(getResources().getString(R.string.results_format, score, shotsFired, timeElapsed/1000));
+                 builder.setMessage(getResources().getString(R.string.end_game_message, score, shotsFired, timeElapsed/1000, highScores.get(0), highScores.get(1), highScores.get(2), highScores.get(3), highScores.get(4) ));
                 builder.setPositiveButton(R.string.reset_game,
                         new DialogInterface.OnClickListener() {
                              @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
-
-                             c.view = new SpriteView(c, null);
-                                 c.view.noTargets = difficulty.getValue() * 2;
-                              c.view.difficulty = difficulty;
-                                 c.setContentView(c.view);
+                                 newGame();
                             }
                         });
 
@@ -155,9 +154,24 @@ public class GameModel {
         return timeRemaining <= 0;
     }
 
+    public void newGame() {
+        final CannonActivity c = (CannonActivity) this.context;
+
+        c.view = new SpriteView(c, null);
+        c.view.noTargets = difficulty.getValue() * 2;
+        c.view.difficulty = difficulty;
+        c.setContentView(c.view);
+    }
+
     public GameModel(int noTargets, Context context, Difficulty difficulty) {
         this.noTargets = noTargets;
         this.context = context;
+        final CannonActivity c = (CannonActivity) this.context;
+        if (highScoreSave == null ) {
+            highScoreSave = new HighScoreSave(c);
+        }
+
+        System.out.println("New game! Current high scores:" + highScoreSave.getScores());
         this.difficulty = difficulty;
          initSprites();
         adjustDifficultySettings();
@@ -165,6 +179,10 @@ public class GameModel {
         score = 0;
      }
 
+
+    public void saveHighScore() {
+         highScores = highScoreSave.saveHighScores(score);
+    }
 
 
     void initSprites() {

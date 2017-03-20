@@ -59,6 +59,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     public void setupCanon(){
 
     }
+
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         model = new GameModel(noTargets, this.context, difficulty);
