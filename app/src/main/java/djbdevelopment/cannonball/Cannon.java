@@ -42,10 +42,7 @@ public class Cannon {
     }
 
     public void draw(Canvas c){
-        //c.drawBitmap(this.bmp,CannonActivity.getScreenWidth()/2, CannonActivity.getScreenHeight(), null);
-
         c.drawCircle(CannonActivity.getScreenWidth()/2, CannonActivity.getScreenHeight(),  this.cannonBaseRadius, this.cannonPaint);
-
     }
 
 

@@ -1,6 +1,7 @@
 package djbdevelopment.cannonball;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -10,11 +11,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
-import static djbdevelopment.cannonball.Constants.*;
 
+import static djbdevelopment.cannonball.Constants.*;
 
 
 public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
@@ -48,15 +50,15 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         this.context = context;
         ap = new AudioPlayer();
         initPaints();
-     }
+    }
 
 
-     @Override
+    @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
 
 
-    public void setupCanon(){
+    public void setupCanon() {
 
     }
 
@@ -64,10 +66,10 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         model = new GameModel(noTargets, this.context, difficulty);
-        CannonLength = ((screenWidth / 8) *  5);
+        CannonLength = ((screenWidth / 8) * 5);
 
         this.cannon = new Cannon(CannonLength, screenHeight / 18, screenHeight);
-        this.cb = new CannonBall(targetPaint);
+        this.cb = new CannonBall(targetPaint, this.context);
         this.blocker = new Blocker(targetPaint);
 
         Target lastTarget = model.targets.get(model.targets.size() - 1);
@@ -98,12 +100,11 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-     public void stopGame() {
-        if (canonThread != null)
-        {
+    public void stopGame() {
+        if (canonThread != null) {
             canonThread.setRunning(false);
         }
-         ap.stop();
+        ap.stop();
     }
 
 
@@ -151,9 +152,9 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     public void drawTarget(Canvas g) {
-         for (Target t : model.targets) {
-             t.draw(g);
-         }
+        for (Target t : model.targets) {
+            t.draw(g);
+        }
     }
 
 
@@ -169,7 +170,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawCannonBall(Canvas c) {
-         cb.draw(c);
+        cb.draw(c);
     }
 
     public void drawBlocker(Canvas c) {
@@ -178,12 +179,12 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     public void drawGameElements(Canvas c) {
-         super.draw(c);
+        super.draw(c);
         c.drawColor(0xFF255D6B);
         drawTarget(c);
         drawGameInfo(c);
         drawCanon(c);
-         drawCannonBall(c);
+        drawCannonBall(c);
         drawBlocker(c);
 
 
@@ -192,13 +193,13 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     Point getLineEnd(Point lineStart, Point touchPoint, int length) {
         double rad = Math.atan((touchPoint.y - lineStart.y) / (touchPoint.x - lineStart.x));
         Point lineEnd = new Point(lineStart);
-        lineEnd.offset((int) length * (int) Math.cos(rad), (int) length * (int) Math.sin(rad) );
+        lineEnd.offset((int) length * (int) Math.cos(rad), (int) length * (int) Math.sin(rad));
 
         return lineEnd;
     }
 
     public void fireCannonball(MotionEvent event) {
-        Point touchPoint = new Point((int)event.getX(), (int)event.getY());
+        Point touchPoint = new Point((int) event.getX(), (int) event.getY());
         int res = cb.fire(touchPoint.x, touchPoint.y);
         model.shotsFired += res;
 
@@ -248,7 +249,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
-         ArrayList<Target> targets = model.targets;
+        ArrayList<Target> targets = model.targets;
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
             fireCannonball(event);
@@ -256,7 +257,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         }
         return super.onTouchEvent(event);
     }
-    public void initPaints(){
+
+    public void initPaints() {
         textPaint = new Paint();
         targetPaint = new Paint();
         targetPaint.setStrokeWidth(25);
@@ -264,6 +266,18 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         textPaint.setAntiAlias(true); // smooth the text
         textPaint.setARGB(255, 255, 255, 255);
         rect = new Rect(0, 0, screenWidth, screenHeight);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this.context, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this.context, "portrait", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 

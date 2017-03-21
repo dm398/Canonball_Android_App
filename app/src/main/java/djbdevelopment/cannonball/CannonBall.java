@@ -1,12 +1,18 @@
 package djbdevelopment.cannonball;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 import java.util.Random;
 
+import static android.R.attr.bitmap;
 import static djbdevelopment.cannonball.Constants.cannonBallSpeed;
 
 /**
@@ -18,16 +24,21 @@ public class CannonBall {
     float rad;
     Paint fg;
     boolean backfiring = false;
+    Bitmap image;
 
-    public CannonBall(Paint fg) {
-        this();
+
+    public CannonBall(Paint fg, Context c) {
+        this(c);
         this.fg = fg;
     }
 
     static Random random = new Random();
 
-    public CannonBall() {
-        s = new Vector2d();
+    public CannonBall(Context c) {
+         this.image = BitmapFactory.decodeResource(c.getResources(), R.drawable.cannonball);
+
+
+         s = new Vector2d();
         v = new Vector2d();
         s.x = CannonActivity.getScreenWidth() /2;
         s.y = CannonActivity.getScreenHeight();
@@ -80,8 +91,14 @@ public class CannonBall {
     }
 
     public void draw(Canvas c) {
-         c.drawCircle(s.x, s.y, rad, fg);
+
+        c.drawBitmap(image, s.x, s.y, fg);
+
+       // c.drawCircle(s.x, s.y, rad, fg);
+
+
     }
+
 
 
 }

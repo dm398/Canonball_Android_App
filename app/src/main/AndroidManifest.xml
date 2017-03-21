@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
         <activity android:name="djbdevelopment.cannonball.SimpleContentActivity"></activity>
-        <activity android:name="djbdevelopment.cannonball.CannonActivity"></activity>
+        <activity android:name="djbdevelopment.cannonball.CannonActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            ></activity>
 
     </application>
 

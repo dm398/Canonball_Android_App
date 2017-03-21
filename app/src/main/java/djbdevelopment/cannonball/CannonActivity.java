@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.widget.Toast;
 
 /**
  * Created by danmacduff on 07/03/2017.
@@ -51,13 +53,34 @@ public class CannonActivity extends Activity {
     }
      @Override
     public void onPause() {
+         System.out.println("paused");
         super.onPause();
         view.stopGame();  // terminates the game
     }
 
      @Override
     public void onDestroy() {
-        super.onDestroy();
+         System.out.println("destroyed");
+         super.onDestroy();
         view.stopGame();
      }
+
+    @Override
+    public void onStop() {
+        System.out.println("stopped");
+        super.onDestroy();
+        view.stopGame();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
