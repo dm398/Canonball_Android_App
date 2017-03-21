@@ -68,7 +68,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         model = new GameModel(noTargets, this.context, difficulty);
         CannonLength = ((screenWidth / 8) * 5);
 
-        this.cannon = new Cannon(CannonLength, screenHeight / 18, screenHeight);
+        this.cannon = new Cannon(CannonLength, screenHeight / 18, screenHeight, this.context);
         this.cb = new CannonBall(targetPaint, this.context);
         this.blocker = new Blocker(targetPaint);
 
