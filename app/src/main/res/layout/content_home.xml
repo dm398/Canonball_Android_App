@@ -22,7 +22,7 @@
         android:orientation="vertical" >
 
         <TextView
-            android:text="CanonBall"
+            android:text="CannonBall"
             android:layout_height="match_parent"
             android:id="@+id/textView2"
             android:maxLines="1"

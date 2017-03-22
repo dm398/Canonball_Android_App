@@ -89,8 +89,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     private void updatePositions(double elapsedTimeMs) {
-        double interval = elapsedTimeMs / 1000.0;
-        for (Target t : model.targets) {
+         for (Target t : model.targets) {
             t.update(rect);
             if (t.contains(model.cb.s.x, model.cb.s.y)) {
                 ap.playGlassSound(context);
@@ -166,17 +165,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         drawCanon(c);
         drawCannonBall(c);
         drawBlocker(c);
-
-
     }
 
-    Point getLineEnd(Point lineStart, Point touchPoint, int length) {
-        double rad = Math.atan((touchPoint.y - lineStart.y) / (touchPoint.x - lineStart.x));
-        Point lineEnd = new Point(lineStart);
-        lineEnd.offset((int) length * (int) Math.cos(rad), (int) length * (int) Math.sin(rad));
-
-        return lineEnd;
-    }
 
     public void fireCannonball(MotionEvent event) {
         Point touchPoint = new Point((int) event.getX(), (int) event.getY());
@@ -231,12 +221,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         float y = event.getY();
         lastTouchX = x;
         lastTouchY = y;
-        ArrayList<Target> targets = model.targets;
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-
+         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             fireCannonball(event);
-
-
         }
         return super.onTouchEvent(event);
     }

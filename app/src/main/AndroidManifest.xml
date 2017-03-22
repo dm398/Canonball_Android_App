@@ -24,8 +24,7 @@
         </activity>
         <activity android:name="djbdevelopment.cannonball.SimpleContentActivity"></activity>
         <activity android:name="djbdevelopment.cannonball.CannonActivity"
-             android:screenOrientation="portrait"
-            ></activity>
+             ></activity>
 
     </application>
 
