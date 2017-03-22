@@ -31,9 +31,8 @@ public class Cannon {
 
     }
 
-    Cannon( int cannonBaseRadius, int screenHeight, Context c) {
-        this.cannonBaseRadius = cannonBaseRadius;
-        this.image = BitmapFactory.decodeResource(c.getResources(), R.drawable.cannon);
+    Cannon(Context c) {
+         this.image = BitmapFactory.decodeResource(c.getResources(), R.drawable.cannon);
         cannonPaint = new Paint();
         cannonPaint.setARGB(255, 255, 255, 255);
         cannonPaint.setStrokeWidth(8);
@@ -66,6 +65,14 @@ public class Cannon {
     }
 
 
+    /**
+     * Method taken from user2288580 on StackOverFlow, code snippet
+     * available at http://stackoverflow.com/a/30162305/7154283
+     *
+     * @param firstPoint
+     * @param secondPoint
+     * @return
+     */
     public double getAngleFromPoint(Point firstPoint, Point secondPoint) {
 
         if((secondPoint.x > firstPoint.x)) {//above 0 to 180 degrees

@@ -22,15 +22,11 @@ import static djbdevelopment.cannonball.Constants.cannonBallSpeed;
 public class CannonBall {
     Vector2d s, v;
     float rad;
-    Paint fg;
     boolean backfiring = false;
     Bitmap image;
 
 
-    public CannonBall(Paint fg, Context c) {
-        this(c);
-        this.fg = fg;
-    }
+
 
     static Random random = new Random();
 
@@ -92,7 +88,7 @@ public class CannonBall {
 
     public void draw(Canvas c) {
 
-        c.drawBitmap(image, s.x, s.y, fg);
+        c.drawBitmap(image, s.x, s.y, null);
 
        // c.drawCircle(s.x, s.y, rad, fg);
 

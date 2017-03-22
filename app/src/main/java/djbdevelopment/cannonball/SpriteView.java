@@ -26,20 +26,12 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     Paint textPaint;
     Paint targetPaint;
     AudioPlayer ap;
-
-
-    Cannon cannon;
-    CannonBall cb;
-    Blocker blocker;
-
-
     Difficulty difficulty;
     int noTargets;
     int screenHeight = CannonActivity.getScreenHeight();
     int screenWidth = CannonActivity.getScreenWidth();
-    private float lastTouchX = screenWidth / 2;
-    private float lastTouchY = screenHeight / 2;
-
+    private float lastTouchX = screenWidth / 2; /* default */
+    private float lastTouchY = screenHeight / 2; /* default */
     Rect rect;
     static String tag = "Cannon Sprite View: ";
 
@@ -66,16 +58,6 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         model = new GameModel(noTargets, this.context, difficulty);
 
-        this.cannon = new Cannon(screenHeight / 18, screenHeight, this.context);
-        this.cb = new CannonBall(targetPaint, this.context);
-        this.blocker = new Blocker(targetPaint);
-
-        Target lastTarget = model.targets.get(model.targets.size() - 1);
-
-        float blockerY = lastTarget.s.y + 80;
-
-        blocker.start.y = blockerY;
-        blocker.stop.y = blockerY;
 
 
         canonThread = new CanonThread(holder);
@@ -110,42 +92,42 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
         double interval = elapsedTimeMs / 1000.0;
         for (Target t : model.targets) {
             t.update(rect);
-            if (t.contains(cb.s.x, cb.s.y)) {
+            if (t.contains(model.cb.s.x, model.cb.s.y)) {
                 ap.playGlassSound(context);
                 // ball has hit the target
                 model.targets.remove(t);
                 // increase score by 10 x the current difficulty value
                 model.score += difficulty.getValue() * 10;
                 model.timeRemaining += bonusScore;
-                cb.reSpawn();
+                model.cb.reSpawn();
 
                 break;
             }
-            if (blocker.contains(cb.s.x, cb.s.y)) {
+            if (model.blocker.contains(model.cb.s.x, model.cb.s.y)) {
                 // ball has hit the blocker
 
-                if (cb.backfiring == false) {
+                if (model.cb.backfiring == false) {
                     model.score -= difficulty.getValue() * 15;
 
                     // we only call this if the cannonball
                     // isn't already in the process of backfiring
                     model.timeRemaining += punishScore;
                     // increase blocker's length by 5%
-                    float addedLength = blocker.getLength() * (float) 0.05;
+                    float addedLength = model.blocker.getLength() * (float) 0.05;
 
-                    if (blocker.stop.x + addedLength < screenWidth) {
+                    if (model.blocker.stop.x + addedLength < screenWidth) {
                         // add the extra length to the end if we can get it to fit
-                        blocker.stop.x += addedLength;
+                        model.blocker.stop.x += addedLength;
                     } else {
-                        blocker.start.x -= addedLength;
+                        model.blocker.start.x -= addedLength;
                     }
-                    cb.backfire();
+                    model.cb.backfire();
                     ap.playBounceSound(context);
                 }
             }
         }
-        cb.update(rect);
-        blocker.update(rect);
+        model.cb.update(rect);
+        model.blocker.update(rect);
     }
 
 
@@ -164,15 +146,15 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawCanon(Canvas c) {
-        cannon.alignCannon(lastTouchX, lastTouchY, c);
+        model.cannon.alignCannon(lastTouchX, lastTouchY, c);
     }
 
     public void drawCannonBall(Canvas c) {
-        cb.draw(c);
+        model.cb.draw(c);
     }
 
     public void drawBlocker(Canvas c) {
-        blocker.draw(c);
+        model.blocker.draw(c);
     }
 
 
@@ -198,7 +180,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void fireCannonball(MotionEvent event) {
         Point touchPoint = new Point((int) event.getX(), (int) event.getY());
-        int res = cb.fire(touchPoint.x, touchPoint.y);
+        int res = model.cb.fire(touchPoint.x, touchPoint.y);
         model.shotsFired += res;
 
         if (res == 1) {
