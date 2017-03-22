@@ -31,15 +31,14 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     Cannon cannon;
     CannonBall cb;
     Blocker blocker;
-    int CannonLength;
 
 
     Difficulty difficulty;
     int noTargets;
-
-    private float targetVelocity;
     int screenHeight = CannonActivity.getScreenHeight();
     int screenWidth = CannonActivity.getScreenWidth();
+    private float lastTouchX = screenWidth / 2;
+    private float lastTouchY = screenHeight / 2;
 
     Rect rect;
     static String tag = "Cannon Sprite View: ";
@@ -66,9 +65,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         model = new GameModel(noTargets, this.context, difficulty);
-        CannonLength = ((screenWidth / 8) * 5);
 
-        this.cannon = new Cannon(CannonLength, screenHeight / 18, screenHeight, this.context);
+        this.cannon = new Cannon(screenHeight / 18, screenHeight, this.context);
         this.cb = new CannonBall(targetPaint, this.context);
         this.blocker = new Blocker(targetPaint);
 
@@ -166,7 +164,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawCanon(Canvas c) {
-        cannon.draw(c);
+        cannon.alignCannon(lastTouchX, lastTouchY, c);
     }
 
     public void drawCannonBall(Canvas c) {
@@ -249,10 +247,13 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
+        lastTouchX = x;
+        lastTouchY = y;
         ArrayList<Target> targets = model.targets;
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
             fireCannonball(event);
+
 
         }
         return super.onTouchEvent(event);
