@@ -19,12 +19,8 @@ import java.net.URL;
  */
 
 public class Cannon {
-     int cannonBaseRadius;
-    Paint cannonPaint;
-
-
     Bitmap image;
-    Vector2d v;
+    //Vector2d v;
     Matrix m;
 
     public Cannon() {
@@ -33,13 +29,7 @@ public class Cannon {
 
     Cannon(Context c) {
          this.image = BitmapFactory.decodeResource(c.getResources(), R.drawable.cannon);
-        cannonPaint = new Paint();
-        cannonPaint.setARGB(255, 255, 255, 255);
-        cannonPaint.setStrokeWidth(8);
-
-
-        v = new Vector2d();
-        m = new Matrix();
+         m = new Matrix();
     }
 
 

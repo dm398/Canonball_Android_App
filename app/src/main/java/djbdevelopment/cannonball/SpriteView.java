@@ -20,7 +20,7 @@ import static djbdevelopment.cannonball.Constants.*;
 
 
 public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
-    private CanonThread canonThread; // controls the game loop
+    private CannonThread CannonThread; // controls the game loop
     Context context;
     GameModel model;
     Paint textPaint;
@@ -60,19 +60,19 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
 
 
 
-        canonThread = new CanonThread(holder);
-        canonThread.setRunning(true);
-        canonThread.start();
+        CannonThread = new CannonThread(holder);
+        CannonThread.setRunning(true);
+        CannonThread.start();
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         ap.stop();
         boolean retry = true;
-        canonThread.setRunning(false); // terminate Thread
+        CannonThread.setRunning(false); // terminate Thread
         while (retry) {
             try {
-                canonThread.join();
+                CannonThread.join();
                 retry = false;
             } catch (InterruptedException e) {
                 Log.e(tag, "Thread interrupted", e);
@@ -81,8 +81,8 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void stopGame() {
-        if (canonThread != null) {
-            canonThread.setRunning(false);
+        if (CannonThread != null) {
+            CannonThread.setRunning(false);
         }
         ap.stop();
     }
@@ -179,11 +179,11 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
-    private class CanonThread extends Thread {
+    private class CannonThread extends Thread {
         private SurfaceHolder surfaceHolder; // for manipulating canvas
         private boolean threadIsRunning = true; // running by default
 
-        public CanonThread(SurfaceHolder holder) {
+        public CannonThread(SurfaceHolder holder) {
             surfaceHolder = holder;
             setName("CanonThread");
         }

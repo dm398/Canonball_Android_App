@@ -103,8 +103,13 @@ public class GameModel {
         }
     }
 
+    /**
+     * Method resets the constant variables each time the game is reset.
+     * The target speed and Cannon Ball speed are dependent on the user's screen
+     * size to ensure fair ground between users of the game on different hardware
+     */
     public void resetConstants() {
-        targetSpeed = 2;
+        targetSpeed = CannonActivity.getScreenHeight() / 140;
         blockerSpeed = 3;
         cannonBallSpeed = CannonActivity.getScreenHeight() / 35;
     }
