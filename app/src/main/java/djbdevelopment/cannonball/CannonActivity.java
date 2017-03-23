@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 /**
- * Created by danmacduff on 07/03/2017.
+ * Created by Student 630 022 295 on 07/03/2017.
  */
 public class CannonActivity extends Activity {
     static String tag = "Cannon: ";

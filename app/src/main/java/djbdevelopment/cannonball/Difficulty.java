@@ -1,7 +1,7 @@
 package djbdevelopment.cannonball;
 
 /**
- * Created by danmacduff on 17/03/2017.
+ * Created by Student 630 022 295 on 17/03/2017.
  */
 
 public enum Difficulty {

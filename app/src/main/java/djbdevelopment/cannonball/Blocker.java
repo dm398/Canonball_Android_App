@@ -9,7 +9,7 @@ import java.util.Random;
 import static djbdevelopment.cannonball.Constants.blockerSpeed;
 
 /**
- * Created by danmacduff on 07/03/2017.
+ * Created by Student 630 022 295 on 07/03/2017.
  */
 
 public class Blocker {

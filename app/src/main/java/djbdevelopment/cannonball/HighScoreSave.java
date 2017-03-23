@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by danmacduff on 20/03/2017.
+ * Created by Student 630 022 295 on 20/03/2017.
  */
 
 public class HighScoreSave {

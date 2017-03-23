@@ -14,7 +14,7 @@ import java.util.Random;
 
 
 /**
- * Created by danmacduff on 15/03/2017.
+ * Created by Student 630 022 295 on 15/03/2017.
  */
 
 public class Target {

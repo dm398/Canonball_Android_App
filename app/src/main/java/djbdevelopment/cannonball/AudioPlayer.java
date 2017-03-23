@@ -4,7 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 
 /**
- * Created by danmacduff on 19/03/2017.
+ * Created by Student 630 022 295 on 19/03/2017.
  */
 
 public class AudioPlayer {
