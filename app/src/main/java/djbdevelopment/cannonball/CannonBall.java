@@ -25,9 +25,6 @@ public class CannonBall {
     boolean backfiring = false;
     Bitmap image;
 
-
-
-
     static Random random = new Random();
 
     public CannonBall(Context c) {
@@ -49,10 +46,6 @@ public class CannonBall {
         backfiring = false;
     }
 
-    public int getScore() {
-        return 10;
-    }
-
     public int fire(float x, float y) {
 
         if (s.x != CannonActivity.getScreenWidth() / 2 || s.y != CannonActivity.getScreenHeight()) {
@@ -71,7 +64,7 @@ public class CannonBall {
         v.y *= -1;
      }
 
-    public void update(Rect rect) {
+    public void update() {
        s.add(v);
         if (s.y <= 0 || s.x <= 0 || s.x >= CannonActivity.getScreenWidth() || s.y >= CannonActivity.getScreenHeight()){
             // cannon ball off the screen, so we reset
@@ -82,17 +75,8 @@ public class CannonBall {
 
      }
 
-    public boolean contains(float x, float y) {
-        return s.dist(x,y) < rad;
-    }
-
     public void draw(Canvas c) {
-
         c.drawBitmap(image, s.x, s.y, null);
-
-       // c.drawCircle(s.x, s.y, rad, fg);
-
-
     }
 
 

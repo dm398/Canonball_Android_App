@@ -24,8 +24,6 @@ public class Blocker {
     }
 
 
-    static Random random = new Random();
-
     public Blocker() {
         start = new Vector2d();
         stop = new Vector2d();
@@ -65,10 +63,7 @@ public class Blocker {
         c.drawLine(start.x, start.y, stop.x, stop.y, this.colour);
     }
 
-    public int getScore() {
-        return 10;
-    }
-    public void update(Rect rect) {
+     public void update(Rect rect) {
         start.add(v);
         stop.add(v);
         if (stop.x >= CannonActivity.getScreenWidth() || start.x <= 0 ) {

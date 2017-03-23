@@ -11,7 +11,5 @@ public final class Constants {
     static float blockerSpeed = 3;
     static float cannonBallSpeed = 20;
 
-    int delay = 50;
-
 
 }

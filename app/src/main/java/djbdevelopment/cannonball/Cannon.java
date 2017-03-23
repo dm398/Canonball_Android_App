@@ -44,16 +44,6 @@ public class Cannon {
         c.drawBitmap(this.image, m, null);
     }
 
-    public float getAngle(Point target) {
-        float angle = (float) Math.toDegrees(Math.atan2(target.y - CannonActivity.getScreenHeight(), target.x - (CannonActivity.getScreenWidth()/2)));
-
-        if(angle < 0){
-            angle += 360;
-        }
-
-        return angle;
-    }
-
 
     /**
      * Method taken from user2288580 on StackOverFlow, code snippet

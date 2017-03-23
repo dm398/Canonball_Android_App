@@ -125,7 +125,7 @@ public class SpriteView extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }
         }
-        model.cb.update(rect);
+        model.cb.update();
         model.blocker.update(rect);
     }
 
